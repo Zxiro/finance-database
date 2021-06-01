@@ -1,19 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
   <div id = "app">
-    <h1> DBMS Project </h1>
-    <home-page></home-page>
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <router-link to="/" class="navbar-brand">fin_db</router-link>
+    </nav>
   </div>
 </template>
 
 <script>
-import HomePage from './components/HomePage.vue'//Import
+//import HomePage from './components/HomePage.vue'//Import
 
 export default {
   name: 'App',
   components: {
     //註冊元件
-    HomePage
+    //HomePage
   }
 }
 </script>

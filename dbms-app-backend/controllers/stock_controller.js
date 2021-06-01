@@ -22,14 +22,42 @@ exports.create = (req, res) => {
     }).catch(err => {
         res.status(500).send({
             message: 
-                err.message || "Some error occurred"
+                err.message || "Some error occurred while createing stocks"
         });
     });
 };
 
-exports.findOne = (req, res) => {
+exports.findAll = (req, res) => {
+    const stockSymbol = req.query.stock_symbol;
+    var cond = stockSymbol ? {stock_symbol:{[Op.iLike]: `%${stockSymbol}`}} : null;
 
-}
+    Stock.findAll({where: cond})
+    .then(data =>{
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving stocks"
+        })
+    })
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  //Using raw SQL
 const getStockSymbol = async (req, res) => { 
     let StockSymbol;
