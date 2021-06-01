@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize)=>{
-    const stock = sequelize.define("stock", {
+    const Stock = sequelize.define("stock", {
         stock_symbol:{
             type: Sequelize.INTEGER
         },
-        open_price:{
+        /*open_price:{
             type: Sequelize.INTEGER
         },
         high_price:{
@@ -14,9 +14,9 @@ module.exports = (sequelize, Sequelize)=>{
         },
         close_pricel:{
             type: Sequelize.INTEGER
-        }
+        }*/
     });
-    return stock;
+    return Stock;
 };
 //This Sequelize Model represents stocks table in PostgreSQL database. 
 //These columns will be generated automatically: id, stock_symbol, createdAt, updatedAt.
