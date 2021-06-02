@@ -1,4 +1,4 @@
-# dbms-app
+# fin-db
 
 ## Project setup
 ```

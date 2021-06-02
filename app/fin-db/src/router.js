@@ -3,8 +3,8 @@ import {createWebHistory, createRouter} from "vue-router"; //vue-router to contr
 const routes = [
     {
         path: "/", //the URL path
-        alias: "home-page", // optional name when we link to this route
-        name:"home-page",
+        alias: "/home", // optional name when we link to this route
+        name:"home",
         component: () => import("./components/HomePage")
     }
 ];
@@ -12,6 +12,6 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
-  });
+});
   
-  export default router;
+export default router;

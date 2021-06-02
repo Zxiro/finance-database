@@ -2,20 +2,19 @@
   <div id = "app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <router-link to="/" class="navbar-brand">fin_db</router-link>
+      <div class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <router-link to="/home" class="nav-link">Tutorials</router-link>
+        </li>
+      </div>
     </nav>
   </div>
 </template>
 
 <script>
-//import HomePage from './components/HomePage.vue'//Import
-
 export default {
-  name: 'App',
-  components: {
-    //註冊元件
-    //HomePage
-  }
-}
+  name: 'app'
+};
 </script>
 
 <style>
