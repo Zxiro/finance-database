@@ -6,7 +6,17 @@ const routes = [
         alias: "/home", // optional name when we link to this route
         name:"home",
         component: () => import("./components/HomePage")
-    }
+    },
+    {
+        path: "/stocks", //the URL path
+        name:"stock",
+        component: () => import("./components/StockPage.vue")
+    },
+    {
+        path: "/bonds", //the URL path
+        name:"bond",
+        component: () => import("./components/BondPage")
+    },
 ];
 
 const router = createRouter({

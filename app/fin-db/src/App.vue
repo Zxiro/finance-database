@@ -4,16 +4,22 @@
       <router-link to="/" class="navbar-brand">fin_db</router-link>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link to="/home" class="nav-link">Tutorials</router-link>
+          <router-link to="/stocks" class="nav-link">stocks</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/bonds" class="nav-link">bonds</router-link>
         </li>
       </div>
     </nav>
+    <div class="container mt-3">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'App'
 };
 </script>
 
@@ -21,9 +27,8 @@ export default {
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  -webkit-background-clip: padding-box;
+  -moz-osx-font-smoothing: grayscale;;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

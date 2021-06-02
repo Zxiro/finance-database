@@ -1,5 +1,25 @@
 <template>
     <div class="submit-form">
+    <div v-if="!submitted">
+      <div class="form-group">
+        <label for="stock-symbol">Stock Symbol</label>
+        <input
+          type="text"
+          class="form-control"
+          id="stock-symbol"
+          required
+          v-model="tutorial.stock_symbol"
+          name="title"
+        />
+      </div>
+
+      <button @click="saveStockSymbol" class="btn btn-success">Submit</button>
+    </div>
+
+    <div v-else>
+      <h4>You submitted successfully!</h4>
+      <!-- button class="btn btn-success" @click="newTutorial">Add</button-->
+    </div>
   </div>
 </template>
 
