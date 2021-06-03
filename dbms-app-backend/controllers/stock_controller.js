@@ -22,13 +22,13 @@ exports.create = (req, res) => {
     }).catch(err => {
         res.status(500).send({
             message: 
-                err.message || "Some error occurred while createing stocks"
+                err.message || "Some error occurred while creating stocks"
         });
     });
 };
 
-exports.findAll = (req, res) => {
-    const stockSymbol = req.query.stock_symbol;
+/*exports.findAll = (req, res) => {
+    /*const stockSymbol = req.query.stock_symbol;
     var cond = stockSymbol ? {stock_symbol:{[Op.iLike]: `%${stockSymbol}`}} : null;
 
     Stock.findAll({where: cond})
@@ -41,12 +41,24 @@ exports.findAll = (req, res) => {
                 err.message || "Some error occurred while retrieving stocks"
         })
     })
+};*/
+
+exports.findOne = (req, res) => {
+    const stockSymbol = req.params.stock_symbol;
+    var cond = stockSymbol ? {stock_symbol:{[Op.iLike]: `%${stockSymbol}`}} : null;
+    Stock.findAll({where:{
+        stock_symbol:{[Op.iLike]: `%${stockSymbol}`}
+    }})
+    .then(data =>{
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving stocks"
+        })
+    })
 };
-
-
-
-
-
 
 
 

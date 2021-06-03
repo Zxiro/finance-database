@@ -5,8 +5,7 @@ module.exports = app => { // set the corresponding method when getting different
     // Create a new stock
     router.post("/", stocks.create);
     // Retrive all stock data
-    router.get("/", stocks.findAll);
-
+    router.get("/ :stock_symbol", stocks.findOne);
 
     app.use('/stocks', router);
 };

@@ -11,7 +11,7 @@
         </li>
       </div>
     </nav>
-    <div class="container mt-3">
+    <div class="container mt-5 ">
       <router-view />
     </div>
   </div>

@@ -3,18 +3,20 @@ module.exports = (sequelize, Sequelize)=>{
         stock_symbol:{
             type: Sequelize.INTEGER
         },
-        /*open_price:{
+        open_price:{
             type: Sequelize.INTEGER
         },
+        close_price:{
+            type: Sequelize.INTEGER
+        }
+        /*
         high_price:{
             type: Sequelize.INTEGER
         },
         low_price:{
             type: Sequelize.INTEGER
         },
-        close_pricel:{
-            type: Sequelize.INTEGER
-        }*/
+        */
     });
     return Stock;
 };
