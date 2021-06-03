@@ -11,7 +11,7 @@
         </li>
       </div>
     </nav>
-    <div class="container mt-5 ">
+    <div class="container-fluid mt-5">
       <router-view />
     </div>
   </div>
@@ -30,5 +30,10 @@ export default {
   -webkit-background-clip: padding-box;
   -moz-osx-font-smoothing: grayscale;;
   color: #2c3e50;
+  height: 100vh;
+}
+.container-fluid {
+  height: 100%;
+  background: #f0e68c;
 }
 </style>
