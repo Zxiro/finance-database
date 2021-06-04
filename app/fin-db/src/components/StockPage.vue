@@ -41,7 +41,6 @@
                 />
             </div>
           </div>
-           
           <button @click="saveStock" class="btn btn-success">Submit</button> <!-- create and save new stock table-->
         </form> 
       </div>

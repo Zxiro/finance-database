@@ -8,7 +8,6 @@
           class="form-control"
           id="stock-symbol"
           required
-          v-model="tutorial.stock_symbol"
           name="title"
         />
       </div>

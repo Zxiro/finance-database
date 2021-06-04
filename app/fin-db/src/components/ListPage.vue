@@ -1,18 +1,46 @@
 <template>
+  <div id="type_selector" class="form-group">
+    <label for="type">Select list:</label>
+    <select class="form-control" v-model="type">
+      <option>stock</option>
+      <option>bond</option>
+      <option>enterprise</option>
+      <option>option</option>
+      <option>future</option>
+    </select>
+  </div>
+  <div v-if="type" class="container-fluid mt-5">
+    <router-view></router-view>
+  </div>
   <div class="list row">
     <div class="col-md-8">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by type"
+        <input type="text" class="form-control" placeholder="Search by symbol"
           v-model="stock_symbol"/>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"
-            @click="retrieveStocks()">
+            @click="retrieveStocks(stock_symbol)">
             Search
           </button>
         </div>
       </div>
     </div>
+    
     <div class="col-md-6">
+      <h4>Stock</h4>
+      <div>
+        <label><strong>Title:</strong></label> {{ stock.stock_symbol }}
+      </div>
+      <div>
+        <label><strong>open_price:</strong></label> {{ stock.open_price }}
+      </div>
+      <div>
+        <label><strong>close_price:</strong></label> {{ stock.close_price }}
+      </div>
+      <!--router-link :to="'/stocks/' + stock.stock_symbol" class="badge badge-warning">Edit</router-link-->
+    </div>
+
+    <!-- div class="col-md-6">
       <h4>Tutorials List</h4>
       <ul class="list-group">
         <li class="list-group-item"
@@ -29,26 +57,8 @@
         Remove All
       </button>
     </div>
-    <div class="col-md-6">
-      <div v-if="currentTutorial">
-        <h4>Tutorial</h4>
-        <div>
-          <label><strong>Title:</strong></label> {{ currentTutorial.title }}
-        </div>
-        <div>
-          <label><strong>Description:</strong></label> {{ currentTutorial.description }}
-        </div>
-        <div>
-          <label><strong>Status:</strong></label> {{ currentTutorial.published ? "Published" : "Pending" }}
-        </div>
-
-        <router-link :to="'/tutorials/' + currentTutorial.id" class="badge badge-warning">Edit</router-link>
-      </div>
-      <div v-else>
-        <br />
-        <p>Please click on a Tutorial...</p>
-      </div>
-    </div>
+    
+    </div-->
   </div>
 </template>
 
@@ -56,18 +66,19 @@
 import findataservice from "../services/findataservice";
 
 export default {
-  name: "tutorials-list",
+  name: "list",
   data() {
     return {
+      type: "",
       stock: [],
       stock_symbol: ""
     };
   },
   methods: {
-    retrieveStocks() {
-      findataservice.getbysymbol(this.stock_symbol)
+    retrieveStocks(stock_symbol) {
+      findataservice.getbysymbol(stock_symbol)
         .then(response => {
-          this.stock = response.data;
+          this.stock = response.data[0];
           console.log(response.data);
         })
         .catch(e => {
@@ -122,5 +133,14 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+#type_selector{
+  margin-bottom: 20px;
+  max-width: 80%;
+  margin-left: 140px;
+}
+.container-fluid {
+  height: 50%;
+  
 }
 </style>

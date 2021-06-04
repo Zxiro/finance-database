@@ -5,8 +5,7 @@ class findataservice{
       return http.post("/stocks", data);
     }
     getbysymbol(stock_symbol){
-      return http.get(`/stocks/${stock_symbol}`);
+      return http.get(`stocks/${stock_symbol}`);
     }
 }
-
 export default new findataservice();

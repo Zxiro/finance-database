@@ -5,7 +5,13 @@ const routes = [
         path: "/", //the URL path
         alias: "/home", // optional name when we link to this route
         name:"home",
-        component: () => import("./components/HomePage")
+        component: () => import("./components/ListPage"),
+        children:[
+            {
+                path:'stocks',
+                component: () => import("./components/StockPage.vue")
+            }
+        ]
     },
     {
         path: "/stocks", //the URL path

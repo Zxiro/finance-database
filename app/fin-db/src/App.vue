@@ -12,7 +12,7 @@
       </div>
     </nav>
     <div class="container-fluid mt-5">
-      <router-view />
+      <router-view /> <!-- Decide which component show in this part -->
     </div>
   </div>
 </template>
