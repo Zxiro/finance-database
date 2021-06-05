@@ -1,5 +1,6 @@
 <template>
-  <div id="type_selector" class="form-group">
+<div class="list row">
+  <div id="type_selector" class="form-group col-ml-8">
     <label for="type">Select list:</label>
     <select class="form-control" v-model="type">
       <option>stock</option>
@@ -12,24 +13,33 @@
   <div v-if="type" class="container-fluid mt-5">
     <router-view></router-view>
   </div>
-  <div class="list row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by symbol"
           v-model="stock_symbol"/>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"
-            @click="retrieveStocks(stock_symbol)">
+            @click="retrieveStocks()">
             Search
           </button>
         </div>
       </div>
+       <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search by raw SQL"
+          v-model="sql"/>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button"
+            @click="raw_retrieveStocks()">
+            Search
+          </button>
+        </div>
+       </div>
     </div>
     
     <div class="col-md-6">
       <h4>Stock</h4>
       <div>
-        <label><strong>Title:</strong></label> {{ stock.stock_symbol }}
+        <label><strong>stock_symbol:</strong></label> {{ stock.stock_symbol }}
       </div>
       <div>
         <label><strong>open_price:</strong></label> {{ stock.open_price }}
@@ -71,12 +81,26 @@ export default {
     return {
       type: "",
       stock: [],
-      stock_symbol: ""
+      stock_symbol: "",
+      sql: ""
     };
   },
   methods: {
     retrieveStocks(stock_symbol) {
       findataservice.getbysymbol(stock_symbol)
+        .then(response => {
+          this.stock = response.data[0];
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    raw_retrieveStocks() {
+      var sql = {
+        "sql":this.sql
+      };
+      findataservice.raw_getbysymbol(sql)
         .then(response => {
           this.stock = response.data[0];
           console.log(response.data);
@@ -135,12 +159,11 @@ export default {
   margin: auto;
 }
 #type_selector{
+  max-width: 100%;
+  margin: auto;
   margin-bottom: 20px;
-  max-width: 80%;
-  margin-left: 140px;
 }
 .container-fluid {
   height: 50%;
-  
 }
 </style>

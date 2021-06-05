@@ -6,12 +6,12 @@ const routes = [
         alias: "/home", // optional name when we link to this route
         name:"home",
         component: () => import("./components/ListPage"),
-        children:[
+        /*children:[
             {
-                path:'stocks',
+                /*path:'stocks',
                 component: () => import("./components/StockPage.vue")
             }
-        ]
+        ]*/
     },
     {
         path: "/stocks", //the URL path

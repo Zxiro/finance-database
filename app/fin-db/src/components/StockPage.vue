@@ -1,7 +1,6 @@
 <template>
     <div class="submit-form">
       <div v-if="!submitted">
-        <form>
           <div class="form-group row">
             <label for="stock-symbol" class="col-sm-4 col-form-label">Stock Symbol</label>
               <div class="col-sm-8">
@@ -11,7 +10,7 @@
                   id="stock-symbol"
                   required
                   v-model="stock_data.stock_symbol"
-                  name="stock symbol"
+                  name="stock-symbol"
                 />
             </div>
           </div>
@@ -37,18 +36,21 @@
                   id="close-price"
                   required
                   v-model="stock_data.close_price"
-                  name="close price"
+                  name="close-price"
                 />
             </div>
           </div>
-          <button @click="saveStock" class="btn btn-success">Submit</button> <!-- create and save new stock table-->
-        </form> 
+          <div class = "form-group col text-center mt-4">
+            <button @click="saveStock" class="btn btn-success row-sm-4">Submit</button>
+            <button @click="saveStock" class="btn btn-success row-sm-4">Edit</button>
+            <button @click="saveStock" class="btn btn-success row-sm-4">Delete</button> <!-- create and save new stock table-->
+          </div>
       </div>
       <div v-else>
         <h4>You submitted successfully!</h4>
         <button class="btn btn-success" @click="newStock">Add</button>
       </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -75,14 +77,15 @@ export default {
             close_price: this.stock_data.close_price
         };
         findataservice.create(data)
-        .then(response => {
-            this.stock_data.id = response.data.id;
-            console.log(response.data);
-            this.submitted = true;
-        })
-        .catch(e => {
-            console.log(e);
-        });
+          .then(response => {
+              this.stock_data.id = response.data.id;
+              console.log(response.data);
+              this.submitted = true;
+              response.end();
+          })
+          .catch(e => {
+              console.log(e);
+          });
       },
       newStock(){
         this.submitted = false;
@@ -100,17 +103,22 @@ export default {
   }
   .form-control{
     -webkit-background-clip: padding-box;
+    mt:5px;
   }
   .form-check-input {
     -webkit-print-color-adjust: exact;
-  }
-  .sticky-top {
-      position: sticky;
   }
   body {
       text-size-adjust: 100%;
   }
   th {
       text-align: match-parent;
+  }
+  .btn-success{
+    margin-left: 10px;
+    mr:10px;
+  }
+  .col-sm-8{
+    mt:5px;
   }
 </style>
