@@ -43,12 +43,12 @@
           <div class = "form-group col text-center mt-4">
             <button @click="saveStock" class="btn btn-success row-sm-4">Submit</button>
             <button @click="updateStock" class="btn btn-success row-sm-4">Edit</button>
-            <button @click="saveStock" class="btn btn-success row-sm-4">Delete</button> <!-- create and save new stock table-->
+            <button @click="deleteStock" class="btn btn-success row-sm-4">Delete</button> <!-- create and save new stock table-->
           </div>
       </div>
       <div v-else>
-        <h4>You submitted successfully!</h4>
-        <button class="btn btn-success" @click="newStock">Add</button>
+        <h4>Operation finished!</h4>
+        <button class="btn btn-success" @click="newStock">Return</button>
       </div>
     </div>
 </template>
@@ -98,6 +98,21 @@ export default {
             close_price: this.stock_data.close_price
         };
         findataservice.updatestock(data) 
+        .then( response => {
+            console.log(response.data);
+            response.end;
+            this.action_done = true;
+        }
+        )
+        .catch(e => {
+              console.log(e);
+          });
+      },
+      deleteStock(){
+        var data = {
+            stock_symbol: this.stock_data.stock_symbol,
+        };
+        findataservice.deletestock(data) 
         .then( response => {
             console.log(response.data);
             response.end;

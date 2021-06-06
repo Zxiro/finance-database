@@ -47,32 +47,31 @@
       <div>
         <label><strong>close_price:</strong></label> {{ stock.close_price }}
       </div>
-      <!--router-link :to="'/stocks/' + stock.stock_symbol" class="badge badge-warning">Edit</router-link-->
+      <!-- router-link :to="stocks/" class="badge badge-warning">Edit</router-link-->
     </div>
 
-    <!-- div class="col-md-6">
+    <div class="col-md-6">
       <h4>Tutorials List</h4>
       <ul class="list-group">
-        <li class="list-group-item"
+        <!--li class="list-group-item"
           :class="{ active: index == currentIndex }"
           v-for="(tutorial, index) in tutorials"
           :key="index"
           @click="setActiveTutorial(tutorial, index)"
         >
-          {{ tutorial.title }}
-        </li>
+          {{ stock }}
+        </li-->
       </ul>
 
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
+      <!-- button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
         Remove All
-      </button>
+      </button-->
     </div>
-    
-    </div-->
   </div>
 </template>
 
 <script>
+
 import findataservice from "../services/findataservice";
 
 export default {
@@ -85,7 +84,88 @@ export default {
       sql: ""
     };
   },
+  watch: {
+    type: {
+      handler(value){
+      if(value == 'stock'){
+        this.retrieveAllStockData();
+      }
+      if(value == 'bond'){
+        this.retrieveAllBondData();
+      }
+      if(value == 'enterprise'){
+        this.retrieveAllEnterpriseData();
+      }
+      if(value == 'option'){
+        this.retrieveAllOptionData();
+      }
+      if(value == 'future'){
+        this.retrieveAllFutureData();
+      }
+      }
+    }
+  },
   methods: {
+    retrieveAllStockData() {
+      var type = this.type;
+      console.log(type);
+      findataservice.getall(type)
+        .then(response => {
+          this.stock = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveAllBondData() {
+      var type = this.type;
+      console.log(type);
+      findataservice.getall(type)
+        .then(response => {
+          this.stock = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveAllEnterpriseData() {
+      var type = this.type;
+      console.log(type);
+      findataservice.getall(type)
+        .then(response => {
+          this.stock = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveAllOptionData() {
+      var type = this.type;
+      console.log(type);
+      findataservice.getall(type)
+        .then(response => {
+          this.stock = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveAllFutureData() {
+      var type = this.type;
+      console.log(type);
+      findataservice.getall(type)
+        .then(response => {
+          this.stock = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     retrieveStocks() {
       var stock_symbol = this.stock_symbol;
       findataservice.getbysymbol(stock_symbol)
@@ -109,7 +189,7 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    }
+    },
   }
 }
 /*

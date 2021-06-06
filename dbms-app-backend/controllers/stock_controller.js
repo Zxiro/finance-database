@@ -31,6 +31,26 @@ exports.create = (req, res) => {
     });
 };
 
+exports.getAll = (req, res) => {
+    const stock_symbol = req.query.stock_symbol;
+    console.log(stock_symbol);
+    var cond = stock_symbol ? { stock_symbol: stock_symbol} : null;
+    console.log(cond);
+    Stock.findAll({
+        where: cond// SELECT * FROM stock WHERE stock_symbol = stockSymbol
+    })
+    .then(data =>{
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving stocks"
+        })
+    })
+};
+
 exports.getStockSymbol = (req, res) => {
     const stockSymbol = req.params.stock_symbol;
     Stock.findAll({
@@ -73,7 +93,29 @@ exports.update = (req, res) => {
       });
 };
 
-
+exports.delete = (req, res) => {
+    const stock_symbol = req.body.stock_symbol;
+  
+    Stock.destroy({
+      where: { stock_symbol: stock_symbol }
+    })
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Tutorial was deleted successfully!"
+          });
+        } else {
+          res.send({
+            message: `Cannot delete Tutorial with id=${stock_symbol}. Maybe Tutorial was not found!`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Could not delete Tutorial with id=" + stock_symbol
+        });
+      });
+  };
 
 
 //Using raw SQL
