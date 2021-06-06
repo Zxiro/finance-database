@@ -86,11 +86,12 @@ export default {
     };
   },
   methods: {
-    retrieveStocks(stock_symbol) {
+    retrieveStocks() {
+      var stock_symbol = this.stock_symbol;
       findataservice.getbysymbol(stock_symbol)
         .then(response => {
           this.stock = response.data[0];
-          console.log(response.data);
+          console.log(this.stock);
         })
         .catch(e => {
           console.log(e);
@@ -102,8 +103,8 @@ export default {
       };
       findataservice.raw_getbysymbol(sql)
         .then(response => {
-          this.stock = response.data[0];
-          console.log(response.data);
+          this.stock = response.data["res"][0][0];
+          console.log(this.stock);
         })
         .catch(e => {
           console.log(e);

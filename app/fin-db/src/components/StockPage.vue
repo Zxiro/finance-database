@@ -1,6 +1,6 @@
 <template>
     <div class="submit-form">
-      <div v-if="!submitted">
+      <div v-if="!action_done">
           <div class="form-group row">
             <label for="stock-symbol" class="col-sm-4 col-form-label">Stock Symbol</label>
               <div class="col-sm-8">
@@ -42,7 +42,7 @@
           </div>
           <div class = "form-group col text-center mt-4">
             <button @click="saveStock" class="btn btn-success row-sm-4">Submit</button>
-            <button @click="saveStock" class="btn btn-success row-sm-4">Edit</button>
+            <button @click="updateStock" class="btn btn-success row-sm-4">Edit</button>
             <button @click="saveStock" class="btn btn-success row-sm-4">Delete</button> <!-- create and save new stock table-->
           </div>
       </div>
@@ -66,7 +66,7 @@ export default {
         open_price: "",
         close_price: ""
         },
-        submitted: false
+        action_done: false
       };// The data set that is going to pass to the server
     },
     methods: {
@@ -76,20 +76,37 @@ export default {
             open_price: this.stock_data.open_price,
             close_price: this.stock_data.close_price
         };
-        findataservice.create(data)
+        findataservice.create(data) //promise if successfully create, it will execute .then
           .then(response => {
               this.stock_data.id = response.data.id;
               console.log(response.data);
-              this.submitted = true;
-              response.end();
+              this.action_done = true;
+              response.end;
           })
           .catch(e => {
               console.log(e);
           });
       },
       newStock(){
-        this.submitted = false;
+        this.action_done = false;
         this.stock_data = {};
+      },
+      updateStock(){
+        var data = {
+            stock_symbol: this.stock_data.stock_symbol,
+            open_price: this.stock_data.open_price,
+            close_price: this.stock_data.close_price
+        };
+        findataservice.updatestock(data) 
+        .then( response => {
+            console.log(response.data);
+            response.end;
+            this.action_done = true;
+        }
+        )
+        .catch(e => {
+              console.log(e);
+          });
       }
     }
 };
