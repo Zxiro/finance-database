@@ -1,3 +1,4 @@
+const { data } = require('jquery');
 const { type } = require('os');
 const db = require('../models');
 const Stock = db.stock; // call stocks table in model
@@ -14,11 +15,14 @@ exports.create = (req, res) => {
     }
     // Create a stock table 
     const stock = {
-        stock_symbol: req.body.stock_symbol
+        stock_symbol: req.body.stock_symbol,
+        open_price: req.body.open_price,
+        close_price: req.body.close_price
     };
     // Save stock in the postgreSQL database
     Stock.create(stock).then(data => {
-        res.send(data);
+        console.log(data);
+        res.end();
     }).catch(err => {
         res.status(500).send({
             message: 
@@ -27,29 +31,14 @@ exports.create = (req, res) => {
     });
 };
 
-/*exports.findAll = (req, res) => {
-    /*const stockSymbol = req.query.stock_symbol;
-    var cond = stockSymbol ? {stock_symbol:{[Op.iLike]: `%${stockSymbol}`}} : null;
-
-    Stock.findAll({where: cond})
-    .then(data =>{
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving stocks"
-        })
-    })
-};*/
-
-exports.findOne = (req, res) => {
+exports.getStockSymbol = (req, res) => {
     const stockSymbol = req.params.stock_symbol;
-    var cond = stockSymbol ? {stock_symbol:{[Op.iLike]: `%${stockSymbol}`}} : null;
-    Stock.findAll({where:{
-        stock_symbol:{[Op.iLike]: `%${stockSymbol}`}
+    Stock.findAll({
+        where:{
+            stock_symbol:stockSymbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
     }})
     .then(data =>{
+        console.log(data);
         res.send(data);
     })
     .catch(err => {
@@ -60,19 +49,45 @@ exports.findOne = (req, res) => {
     })
 };
 
+exports.update = (req, res) => {
+    const stock_symbol = req.body.stock_symbol;
+  
+    Stock.update(req.body, {
+      where: { stock_symbol: stock_symbol }
+    })
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Tutorial was updated successfully."
+          });
+        } else {
+          res.send({
+            message: `Cannot update Tutorial with id=${stock_symbol}. Maybe Tutorial was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Tutorial with id=" + stock_symbol
+        });
+      });
+};
 
 
 
 
-
-
-
-
-
-
- //Using raw SQL
-const getStockSymbol = async (req, res) => { 
-    let StockSymbol;
-    StockSymbol = await db.sequelize.query('SELECT "stock_symbol" FROM stocks ', // wait for query finish to continue go on 
-    {type: db.sequelize.QuertTypes.SELECT}); // get SELECT type back
+//Using raw SQL
+exports.raw_getStockSymbol = async (req, res) => { 
+    try{
+        let StockSymbol;
+        console.log(req.body.sql);
+        StockSymbol = await db.sequelize.query(req.body.sql);
+        const data = {
+            "res":StockSymbol
+        }
+        console.log(data);
+        return res.send(data);
+    }catch(err){
+        console.log(err);
+    }
 }

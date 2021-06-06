@@ -1,6 +1,5 @@
 const dbConfig = require("../config/db_config.js");
 const Sequelize = require("sequelize");
-const { methodOf } = require("lodash");
 
 const sequelize = new Sequelize(dbConfig.DB, 
     dbConfig.USER, 
@@ -25,7 +24,7 @@ db.stock = require("./stock_model.js")(sequelize, Sequelize);
 db.enterprise = require("./enterprise_model.js")(sequelize, Sequelize);
 db.bond = require("./bond_model.js")(sequelize, Sequelize);
 
-
+// 可以在這裡做 raw SQL 操作
 module.exports = db; 
 // module.exports is as like as function return
 // so it return db datatype
