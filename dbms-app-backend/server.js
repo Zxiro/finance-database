@@ -30,7 +30,7 @@ const stock_controller = require("./controllers/stock_controller");
 const buildData = async () => {
   try{
     const enter1 = await enterprise_controller.create({
-      enterprise_symbol: 6208
+      enterprise_symbol: 0066
     });
     const stock1 = await stock_controller.create(enter1.enterprise_symbol, {
       stock_symbol: 2330,
