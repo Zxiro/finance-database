@@ -2,6 +2,7 @@ const { data } = require('jquery');
 const { type } = require('os');
 const db = require('../models');
 const Enterprise = db.enterprise; // call stocks table in model
+const Stock = db.stock;
 const Op = db.Sequelize.Op;
 
 //Using Sequelize op
@@ -42,6 +43,27 @@ exports.create = (req, res) => {
     })
 };
 
+exports.getEnterpriseBySymbol = (req, res) => {
+    console.log("?");
+    const enterpriseSymbol = req.params.enterprise_symbol;
+    Enterprise.findAll({
+        where:{
+            enterprise_symbol:enterpriseSymbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
+    },
+    include: Stock
+    })
+    .then(data =>{
+        console.log(data);
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving stocks"
+        })
+    })
+};
 /*exports.getAll = (req, res) => {
     const stock_symbol = req.query.stock_symbol;
     console.log(stock_symbol);
@@ -62,23 +84,6 @@ exports.create = (req, res) => {
     })
 };
 
-exports.getStockSymbol = (req, res) => {
-    const stockSymbol = req.params.stock_symbol;
-    Stock.findAll({
-        where:{
-            stock_symbol:stockSymbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
-    }})
-    .then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving stocks"
-        })
-    })
-};
 
 exports.updatebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;

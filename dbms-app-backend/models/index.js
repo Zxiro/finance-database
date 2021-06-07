@@ -24,7 +24,21 @@ db.stock = require("./stock_model.js")(sequelize, Sequelize);
 db.enterprise = require("./enterprise_model.js")(sequelize, Sequelize);
 db.bond = require("./bond_model.js")(sequelize, Sequelize);
 
-// 可以在這裡做 raw SQL 操作
+
+
+
+// Here to create relationship 
+
+// Stock has enterprise_symbol as FK (1 to 1)
+db.enterprise.hasOne(db.stock);
+db.stock.belongsTo(db.enterprise, {
+  foreignKey: 'enterprise_symbol'
+});
+// Bonds has enterprise_symbol as FK (1 to many)
+db.enterprise.hasMany(db.bond);
+db.bond.belongsTo(db.enterprise, {
+  foreignKey: 'enterprise_symbol'
+});
 module.exports = db; 
 // module.exports is as like as function return
 // so it return db datatype

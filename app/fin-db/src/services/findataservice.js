@@ -40,5 +40,8 @@ class findataservice{
     getbysymbol(stock_symbol){
       return http.get(`/stocks/${stock_symbol}`);
     }
+    enter_getbysymbol(stock_symbol){
+      return http.get(`/enterprises/${stock_symbol}`);
+    }
 }
 export default new findataservice();

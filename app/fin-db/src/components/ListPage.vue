@@ -19,7 +19,7 @@
           v-model="stock_symbol"/>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"
-            @click="retrieveStocks()">
+            @click="retrieveEnterprise()">
             Search
           </button>
         </div>
@@ -169,6 +169,17 @@ export default {
     retrieveStocks() {
       var stock_symbol = this.stock_symbol;
       findataservice.getbysymbol(stock_symbol)
+        .then(response => {
+          this.entities = response.data[0];
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveEnterprise() {
+      var enterprise_symbol = this.stock_symbol;
+      findataservice.enter_getbysymbol(enterprise_symbol)
         .then(response => {
           this.entities = response.data[0];
           console.log(this.entities);
