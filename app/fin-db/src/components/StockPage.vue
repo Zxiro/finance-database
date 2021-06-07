@@ -41,7 +41,6 @@
             </div>
           </div>
           <div class = "form-group col text-center mt-4">
-            <button @click="saveStock" class="btn btn-success row-sm-4">Submit</button><!-- create and save new stock table-->
             <button @click="updateStock" class="btn btn-success row-sm-4">Edit</button>
             <button @click="deleteStock" class="btn btn-success row-sm-4">Delete</button>
             <button @click="countStock" class="btn btn-success row-sm-4">COUNT</button> 
@@ -71,23 +70,6 @@ export default {
       };// The data set that is going to pass to the server
     },
     methods: {
-      saveStock(){
-        var data = {
-            stock_symbol: this.stock_data.stock_symbol,
-            open_price: this.stock_data.open_price,
-            close_price: this.stock_data.close_price
-        };
-        findataservice.create(data) //promise if successfully create, it will execute .then
-          .then(response => {
-              this.stock_data.id = response.data.id;
-              console.log(response.data);
-              this.action_done = true;
-              response.end;
-          })
-          .catch(e => {
-              console.log(e);
-          });
-      },
       newStock(){
         this.action_done = false;
         this.stock_data = {};

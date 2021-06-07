@@ -6,56 +6,41 @@ const Stock = db.stock;
 const Op = db.Sequelize.Op;
 
 //Using Sequelize op
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.enterprise_symbol) {
-        res.status(400).send({
-        message: "Content can not be empty!"
-        });
-        return;
-    }
-    Enterprise.findAll({
-        where:{
-            enterprise_symbol:req.body.enterprise_symbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
-    }})
+exports.create = (create_data) => {
+    // Create a stock table 
+    // Save stock in the postgreSQL database
+    return Enterprise.create({
+        enterprise_symbol: create_data.enterprise_symbol
+    }).then(data => {
+        console.log(data);
+        return data;
+    }).catch(err => {
+        console.log(err);
+    });                
+}
+exports.getStockByEnterpiseSymbol = (enter_symbol) =>{
+    return Enterprise.findByPk(enter_symbol,{
+        include: Stock
+    })
     .then(data =>{
         console.log(data);
-        console.log(data.length);
-        if(data.length != 0){
-            res.send(data);
-            res.end;
-        } else{
-            // Create a stock table 
-            const enterprise = {
-                enterprise_symbol: req.body.enterprise_symbol
-            };
-            // Save stock in the postgreSQL database
-            Enterprise.create(enterprise).then(data => {
-                console.log(data);
-                res.end();
-            }).catch(err => {
-                res.status(500).send({
-                    message: 
-                        err.message || "Some error occurred while creating stocks"
-                });
-            });                
-        } 
+        return data
     })
-};
-
-exports.getEnterpriseBySymbol = (req, res) => {
-    console.log("?");
-    const enterpriseSymbol = req.params.enterprise_symbol;
+    .catch(err => {
+        console.log(err);
+    })
+}
+exports.getEnterpriseBySymbol = (symbol) => {
     Enterprise.findAll({
         where:{
-            enterprise_symbol:enterpriseSymbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
+            enterprise_symbol:symbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
     },
     include: Stock
     })
     .then(data =>{
         console.log(data);
-        console.log(data);
-        res.send(data);
+        //console.log(data);
+        return data
     })
     .catch(err => {
         res.status(500).send({

@@ -2,47 +2,39 @@ const { data } = require('jquery');
 const { type } = require('os');
 const db = require('../models');
 const Stock = db.stock; // call stocks table in model
+const Enterprise = db.enterprise;
 const Op = db.Sequelize.Op;
 
 //Using Sequelize op
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.stock_symbol) {
-        res.status(400).send({
-        message: "Content can not be empty!"
-        });
-        return;
-    }
-    Stock.findAll({
-        where:{
-            stock_symbol:req.body.stock_symbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
-    }})
+exports.create = (symbol, create_data) => {
+    // Create a stock table 
+    const stock = {
+        stock_symbol: create_data.stock_symbol,
+        open_price: create_data.open_price,
+        close_price: create_data.close_price,
+        enterprise_symbol: symbol
+    };
+    // Save stock in the postgreSQL database
+    return Stock.create(stock).then(data => {
+        console.log(data);
+        return data
+    }).catch(err => {
+        console.log(err);
+    })                 
+};
+
+exports.getStockByEnterpiseSymbol = (enter_symbol) =>{
+    /*return Stock.findByPk(enter_symbol,{
+        include: Enterprise
+    })
     .then(data =>{
         console.log(data);
-        console.log(data.length);
-        if(data.length != 0){
-            res.send(data);
-            res.end;
-        } else{
-            // Create a stock table 
-            const stock = {
-                stock_symbol: req.body.stock_symbol,
-                open_price: req.body.open_price,
-                close_price: req.body.close_price
-            };
-            // Save stock in the postgreSQL database
-            Stock.create(stock).then(data => {
-                console.log(data);
-                res.end();
-            }).catch(err => {
-                res.status(500).send({
-                    message: 
-                        err.message || "Some error occurred while creating stocks"
-                });
-            });                
-        } 
+        return data
     })
-};
+    .catch(err => {
+        console.log(err);
+    })*/
+}
 
 exports.getAll = (req, res) => {
     const stock_symbol = req.query.stock_symbol;

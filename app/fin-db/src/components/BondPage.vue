@@ -11,8 +11,6 @@
           name="title"
         />
       </div>
-
-      <button @click="saveStockSymbol" class="btn btn-success">Submit</button>
     </div>
 
     <div v-else>
@@ -23,7 +21,7 @@
 </template>
 
 <script>
-import findataservice from "../services/findataservice";
+//import findataservice from "../services/findataservice";
 export default {
     name: "home",
     data(){
@@ -36,21 +34,6 @@ export default {
       };// The data set that is going to pass to the server
     },
     methods: {
-      saveStockSymbol(){
-        var data = {
-            stock_symbol: this.stock.stock_symbol
-        };
-
-        findataservice.create(data)
-        .then(res =>{
-            this.stock.id = res.data.id;
-            console.log(res.data);
-            this.submitted = true;
-        })
-        .catch(e => {
-            console.log(e);
-        });
-      }
   }
 };
 

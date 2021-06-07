@@ -19,12 +19,6 @@ class findataservice{
     getallFuture(){
       return http.get("/");
     } */   
-    create(data) {
-      return http.post("/stocks", data);
-    }
-    createEnterprise(data) {
-      return http.post("/enterprises", data);
-    }
     updatestock(data){
       return http.post("/stocks/update", data);
     }

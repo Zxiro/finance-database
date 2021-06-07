@@ -30,15 +30,18 @@ db.bond = require("./bond_model.js")(sequelize, Sequelize);
 // Here to create relationship 
 
 // Stock has enterprise_symbol as FK (1 to 1)
-db.enterprise.hasOne(db.stock);
-db.stock.belongsTo(db.enterprise, {
+db.enterprise.hasOne(db.stock, {
   foreignKey: 'enterprise_symbol'
 });
+db.stock.belongsTo(db.enterprise);
+
 // Bonds has enterprise_symbol as FK (1 to many)
-db.enterprise.hasMany(db.bond);
-db.bond.belongsTo(db.enterprise, {
+db.enterprise.hasMany(db.bond, {
   foreignKey: 'enterprise_symbol'
 });
+db.bond.belongsTo(db.enterprise, );
+
+
 module.exports = db; 
 // module.exports is as like as function return
 // so it return db datatype
