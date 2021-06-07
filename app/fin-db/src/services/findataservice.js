@@ -4,9 +4,21 @@ class findataservice{
     /*getall(){
       return http.get(`/${type}`);
     }*/
-    getall(){
+    getallStock(){
+      return http.get("/stocks");
+    }
+    /*getallBond(){
+      return http.get("/bonds");
+    }
+    /*getallEnterprise(){
       return http.get("/");
     }
+    getallOption(){
+      return http.get("/");
+    }
+    getallFuture(){
+      return http.get("/");
+    } */   
     create(data) {
       return http.post("/stocks", data);
     }
@@ -15,6 +27,9 @@ class findataservice{
     }
     deletestock(data){
       return http.post("/stocks/delete", data);
+    }
+    countstock(data){
+      return http.post("/stocks/count", data);
     }
     raw_getbysymbol(sql){
       return http.post("/stocks/raw", sql);

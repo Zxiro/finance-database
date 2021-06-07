@@ -9,11 +9,15 @@ module.exports = app => { // set the corresponding method when getting different
     router.post("/bonds", bonds.create);
 
     // Retrive data by symbol
-    router.get("/bonds/:bond_symbol", bonds.findByBondSymbol);
+    router.get("/stocks", stocks.getAll);
     router.get("/stocks/:stock_symbol", stocks.getStockSymbol);
-    router.post("/stocks/update", stocks.update);
-    router.post("/stocks/delete", stocks.delete);
+    router.post("/stocks/update", stocks.updatebySymbol);
+    router.post("/stocks/delete", stocks.deletebySymbol);
+    router.post("/stocks/count", stocks.countAllStock);
     router.post("/stocks/raw", stocks.raw_getStockSymbol);
+
+    //router.get("/bonds", bonds.getAll);
+    router.get("/bonds/:bond_symbol", bonds.findByBondSymbol);
 
     app.use('/', router);
 };

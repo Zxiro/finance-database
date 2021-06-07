@@ -41,9 +41,10 @@
             </div>
           </div>
           <div class = "form-group col text-center mt-4">
-            <button @click="saveStock" class="btn btn-success row-sm-4">Submit</button>
+            <button @click="saveStock" class="btn btn-success row-sm-4">Submit</button><!-- create and save new stock table-->
             <button @click="updateStock" class="btn btn-success row-sm-4">Edit</button>
-            <button @click="deleteStock" class="btn btn-success row-sm-4">Delete</button> <!-- create and save new stock table-->
+            <button @click="deleteStock" class="btn btn-success row-sm-4">Delete</button>
+            <button @click="countStock" class="btn btn-success row-sm-4">COUNT</button> 
           </div>
       </div>
       <div v-else>
@@ -113,6 +114,21 @@ export default {
             stock_symbol: this.stock_data.stock_symbol,
         };
         findataservice.deletestock(data) 
+        .then( response => {
+            console.log(response.data);
+            response.end;
+            this.action_done = true;
+        }
+        )
+        .catch(e => {
+              console.log(e);
+          });
+      },
+      countStock(){
+        var data = {
+            stock_symbol: this.stock_data.stock_symbol,
+        };
+        findataservice.countstock(data) 
         .then( response => {
             console.log(response.data);
             response.end;

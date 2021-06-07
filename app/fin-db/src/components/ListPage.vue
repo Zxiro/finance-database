@@ -39,13 +39,13 @@
     <div class="col-md-6">
       <h4>Stock</h4>
       <div>
-        <label><strong>stock_symbol:</strong></label> {{ stock.stock_symbol }}
+        <label><strong>stock_symbol:</strong></label> {{ entities.stock_symbol }}
       </div>
       <div>
-        <label><strong>open_price:</strong></label> {{ stock.open_price }}
+        <label><strong>open_price:</strong></label> {{ entities.open_price }}
       </div>
       <div>
-        <label><strong>close_price:</strong></label> {{ stock.close_price }}
+        <label><strong>close_price:</strong></label> {{ entities.close_price }}
       </div>
       <!-- router-link :to="stocks/" class="badge badge-warning">Edit</router-link-->
     </div>
@@ -53,14 +53,14 @@
     <div class="col-md-6">
       <h4>Tutorials List</h4>
       <ul class="list-group">
-        <!--li class="list-group-item"
+        <li class="list-group-item"
           :class="{ active: index == currentIndex }"
-          v-for="(tutorial, index) in tutorials"
+          v-for="(product, index) in entities"
           :key="index"
-          @click="setActiveTutorial(tutorial, index)"
+          @click="setActiveTutorial(product, index)"
         >
-          {{ stock }}
-        </li-->
+          {{ product.stock_symbol }}
+        </li>
       </ul>
 
       <!-- button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
@@ -79,9 +79,11 @@ export default {
   data() {
     return {
       type: "",
-      stock: [],
+      entities: [],
       stock_symbol: "",
-      sql: ""
+      sql: "",
+      currentIndex: -1,
+      currentProduct: null
     };
   },
   watch: {
@@ -107,11 +109,9 @@ export default {
   },
   methods: {
     retrieveAllStockData() {
-      var type = this.type;
-      console.log(type);
-      findataservice.getall(type)
+      findataservice.getallStock()
         .then(response => {
-          this.stock = response.data;
+          this.entities = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -123,7 +123,7 @@ export default {
       console.log(type);
       findataservice.getall(type)
         .then(response => {
-          this.stock = response.data;
+          this.entities = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -135,7 +135,7 @@ export default {
       console.log(type);
       findataservice.getall(type)
         .then(response => {
-          this.stock = response.data;
+          this.entities = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -147,7 +147,7 @@ export default {
       console.log(type);
       findataservice.getall(type)
         .then(response => {
-          this.stock = response.data;
+          this.entities = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -159,7 +159,7 @@ export default {
       console.log(type);
       findataservice.getall(type)
         .then(response => {
-          this.stock = response.data;
+          this.entities = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -170,8 +170,8 @@ export default {
       var stock_symbol = this.stock_symbol;
       findataservice.getbysymbol(stock_symbol)
         .then(response => {
-          this.stock = response.data[0];
-          console.log(this.stock);
+          this.entities = response.data[0];
+          console.log(this.entities);
         })
         .catch(e => {
           console.log(e);
@@ -183,8 +183,8 @@ export default {
       };
       findataservice.raw_getbysymbol(sql)
         .then(response => {
-          this.stock = response.data["res"][0][0];
-          console.log(this.stock);
+          this.entities = response.data["res"][0][0];
+          console.log(this.entities);
         })
         .catch(e => {
           console.log(e);
@@ -227,9 +227,6 @@ export default {
         });
     }
   },
-  mounted() {
-    this.retrieveTutorials();
-  }
 };*/
 </script>
 

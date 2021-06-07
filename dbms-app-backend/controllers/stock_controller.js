@@ -13,22 +13,35 @@ exports.create = (req, res) => {
         });
         return;
     }
-    // Create a stock table 
-    const stock = {
-        stock_symbol: req.body.stock_symbol,
-        open_price: req.body.open_price,
-        close_price: req.body.close_price
-    };
-    // Save stock in the postgreSQL database
-    Stock.create(stock).then(data => {
+    Stock.findAll({
+        where:{
+            stock_symbol:req.body.stock_symbol // SELECT * FROM stock WHERE stock_symbol = stockSymbol
+    }})
+    .then(data =>{
         console.log(data);
-        res.end();
-    }).catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while creating stocks"
-        });
-    });
+        console.log(data.length);
+        if(data.length != 0){
+            res.send(data);
+            res.end;
+        } else{
+            // Create a stock table 
+            const stock = {
+                stock_symbol: req.body.stock_symbol,
+                open_price: req.body.open_price,
+                close_price: req.body.close_price
+            };
+            // Save stock in the postgreSQL database
+            Stock.create(stock).then(data => {
+                console.log(data);
+                res.end();
+            }).catch(err => {
+                res.status(500).send({
+                    message: 
+                        err.message || "Some error occurred while creating stocks"
+                });
+            });                
+        } 
+    })
 };
 
 exports.getAll = (req, res) => {
@@ -69,7 +82,7 @@ exports.getStockSymbol = (req, res) => {
     })
 };
 
-exports.update = (req, res) => {
+exports.updatebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;
   
     Stock.update(req.body, {
@@ -93,7 +106,7 @@ exports.update = (req, res) => {
       });
 };
 
-exports.delete = (req, res) => {
+exports.deletebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;
   
     Stock.destroy({
@@ -115,8 +128,26 @@ exports.delete = (req, res) => {
           message: "Could not delete Tutorial with id=" + stock_symbol
         });
       });
-  };
-
+};
+exports.countAllStock = async(req, res) => {
+    try{
+        let amount
+        amount = await Stock.count({
+        where:{
+            stock_symbol:{
+                [Op.not]: null //stock_symbol IS NOT null
+                }
+            }
+        })
+        console.log(amount);
+        const count = {
+            "count":amount
+        }
+        res.send(count);
+    }catch(err){
+        console.log(err);
+    }
+}
 
 //Using raw SQL
 exports.raw_getStockSymbol = async (req, res) => { 
