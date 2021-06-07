@@ -19,6 +19,11 @@ const routes = [
         component: () => import("./components/StockPage.vue")
     },
     {
+        path: "/enterprises", //the URL path
+        name:"enterprise",
+        component: () => import("./components/EnterprisePage.vue")
+    },
+    {
         path: "/bonds", //the URL path
         name:"bond",
         component: () => import("./components/BondPage")

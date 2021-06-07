@@ -1,12 +1,14 @@
 module.exports = app => { // set the corresponding method when getting different route/request
     const stocks = require("../controllers/stock_controller.js");
     const bonds = require("../controllers/bond_controller.js");
+    const enterprises = require("../controllers/enterprise_controller.js");
     var router = require("express").Router(); // init router var to determine the route
    
     //router.get("/:type", :type.getAll);
     // Create a new instance
     router.post("/stocks", stocks.create);
     router.post("/bonds", bonds.create);
+    router.post("/enterprises", enterprises.create);
 
     // Retrive data by symbol
     router.get("/stocks", stocks.getAll);

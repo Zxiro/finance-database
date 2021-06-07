@@ -7,6 +7,9 @@
           <router-link to="/stocks" class="nav-link">stocks</router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/enterprises" class="nav-link">enterprises</router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/bonds" class="nav-link">bonds</router-link>
         </li>
       </div>
