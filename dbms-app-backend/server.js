@@ -27,21 +27,49 @@ app.listen(PORT, () => {
 const db = require("./models");//entry point index.js
 const enterprise_controller = require("./controllers/enterprise_controller");
 const stock_controller = require("./controllers/stock_controller");
+const bond_controller = require("./controllers/bond_controller");
+const option_controller = require("./controllers/option_controller");
+const future_controller = require("./controllers/future_controller");
+
+
 const buildData = async () => {
   try{
     const enter1 = await enterprise_controller.create({
-      enterprise_symbol: 0066
+      enterprise_symbol: 9999
     });
     const stock1 = await stock_controller.create(enter1.enterprise_symbol, {
       stock_symbol: 2330,
       open_price: 600,
-      close_price:50,
+      close_price:50
     });
-    const test1 = await enterprise_controller.getStockByEnterpiseSymbol(enter1.enterprise_symbol)
-  console.log(
-    "Enterprise with its all bitch=",
-    JSON.stringify(test1, null, 2)
-  );
+    const option1_1 = await option_controller.create(stock1.stock_symbol, {
+      option_symbol: 12330
+    });
+    const option1_2 = await option_controller.create(stock1.stock_symbol, {
+      option_symbol: 22330
+    });
+    const option1_3 = await option_controller.create(stock1.stock_symbol, {
+      option_symbol: 32330
+    });
+    const bond1 = await bond_controller.create(enter1.enterprise_symbol, {
+      bond_symbol: 11
+    });
+    const bond2 = await bond_controller.create(enter1.enterprise_symbol, {
+      bond_symbol: 22
+    });
+    const bond3 = await bond_controller.create(enter1.enterprise_symbol, {
+      bond_symbol: 33
+    });
+    const test1 = await enterprise_controller.getBySymbol(enter1.enterprise_symbol)
+    console.log(
+      "Enterprise with its all bitch=",
+      JSON.stringify(test1, null, 2)
+    );
+    const test2 = await stock_controller.getBySymbol(stock1.stock_symbol)
+    console.log(
+      "Stock with its all bitch=",
+      JSON.stringify(test2, null, 2)
+    );
   }catch(err){
     console.log(err);
   }

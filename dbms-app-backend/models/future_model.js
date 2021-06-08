@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize)=>{
-    const bond = sequelize.define("bond", {
-        bond_symbol:{
+    const future = sequelize.define("future", {
+        future_symbol:{
             type: Sequelize.INTEGER,
             primaryKey: true
         }
     });
-    return bond;
+    return future;
 };

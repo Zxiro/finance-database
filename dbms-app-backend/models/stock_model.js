@@ -1,7 +1,8 @@
 module.exports = (sequelize, Sequelize)=>{
     const Stock = sequelize.define("stock", {
         stock_symbol:{
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            primaryKey: true
         },
         open_price:{
             type: Sequelize.INTEGER

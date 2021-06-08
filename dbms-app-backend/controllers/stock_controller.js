@@ -3,6 +3,7 @@ const { type } = require('os');
 const db = require('../models');
 const Stock = db.stock; // call stocks table in model
 const Enterprise = db.enterprise;
+const Option = db.option;
 const Op = db.Sequelize.Op;
 
 //Using Sequelize op
@@ -22,6 +23,19 @@ exports.create = (symbol, create_data) => {
         console.log(err);
     })                 
 };
+
+exports.getBySymbol = (enter_symbol) =>{
+    return Stock.findByPk(enter_symbol,{
+        include: Option
+    })
+    .then(data =>{
+        console.log(data);
+        return data
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
 
 exports.getStockByEnterpiseSymbol = (enter_symbol) =>{
     /*return Stock.findByPk(enter_symbol,{

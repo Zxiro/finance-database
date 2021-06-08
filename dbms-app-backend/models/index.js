@@ -23,7 +23,8 @@ db.sequelize = sequelize;
 db.stock = require("./stock_model.js")(sequelize, Sequelize);
 db.enterprise = require("./enterprise_model.js")(sequelize, Sequelize);
 db.bond = require("./bond_model.js")(sequelize, Sequelize);
-
+db.option = require("./option_model.js")(sequelize, Sequelize);
+db.future = require("./future_model.js")(sequelize, Sequelize);
 
 
 
@@ -31,7 +32,8 @@ db.bond = require("./bond_model.js")(sequelize, Sequelize);
 
 // Stock has enterprise_symbol as FK (1 to 1)
 db.enterprise.hasOne(db.stock, {
-  foreignKey: 'enterprise_symbol'
+  foreignKey: 'enterprise_symbol',
+  allowNull: false
 });
 db.stock.belongsTo(db.enterprise);
 
@@ -39,7 +41,24 @@ db.stock.belongsTo(db.enterprise);
 db.enterprise.hasMany(db.bond, {
   foreignKey: 'enterprise_symbol'
 });
-db.bond.belongsTo(db.enterprise, );
+db.bond.belongsTo(db.enterprise);
+
+
+
+
+
+
+// Bonds has enterprise_symbol as FK (1 to many)
+db.stock.hasMany(db.option, {
+  foreignKey: 'stock_symbol'
+});
+db.option.belongsTo(db.stock);
+// Bonds has enterprise_symbol as FK (1 to many)
+db.stock.hasMany(db.future, {
+  foreignKey: 'stock_symbol'
+});
+db.future.belongsTo(db.stock);
+
 
 
 module.exports = db; 

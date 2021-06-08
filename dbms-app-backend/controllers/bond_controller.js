@@ -4,29 +4,19 @@ const Bond = db.bond; // call stocks table in model
 const Op = db.Sequelize.Op;
 
 //Using Sequelize op
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.stock_symbol) {
-        res.status(400).send({
-        message: "Content can not be empty!"
-        });
-        return;
-    }
+exports.create = (symbol, create_data) => {
     // Create a stock table 
     const bond = {
-        bond_symbol: req.body.bond_symbol,
-        open_price: req.body.open_price,
-        close_price: req.body.close_price
+        bond_symbol: create_data.bond_symbol,
+        enterprise_symbol: symbol
     };
     // Save stock in the postgreSQL database
-    Bond.create(bond).then(data => {
-        res.send(data);
+    return Bond.create(bond).then(data => {
+        console.log(data);
+        return data
     }).catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while creating bonds"
-        });
-    });
+        console.log(err);
+    })
 };
 
 exports.findByBondSymbol = (req, res) => {
