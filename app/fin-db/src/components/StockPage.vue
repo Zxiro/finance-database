@@ -39,11 +39,27 @@
                   name="close-price"
                 />
             </div>
+            <div class="form-group row">
+            <label for="stock-symbol" class="col-sm-4 col-form-label">Public Enterprise Symbol</label>
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="enterprise-symbol"
+                  required
+                  v-model="stock_data.enterprise_symbol"
+                  name="enterprise-symbol"
+                />
+            </div>
+            </div>
           </div>
           <div class = "form-group col text-center mt-4">
+            <button @click="insertStock" class="btn btn-success row-sm-4">Insert</button>
             <button @click="updateStock" class="btn btn-success row-sm-4">Edit</button>
             <button @click="deleteStock" class="btn btn-success row-sm-4">Delete</button>
-            <button @click="countStock" class="btn btn-success row-sm-4">COUNT</button> 
+            <button @click="countStock" class="btn btn-success row-sm-4">COUNT</button>
+            <button @click="maxStockPrice" class="btn btn-success row-sm-4">MAX</button>
+            <button @click="minStockPrice" class="btn btn-success row-sm-4">MIN</button> 
           </div>
       </div>
       <div v-else>
@@ -64,7 +80,8 @@ export default {
         id: null,
         stock_symbol: "",
         open_price: "",
-        close_price: ""
+        close_price: "",
+        enterprise_symbol: ""
         },
         action_done: false
       };// The data set that is going to pass to the server
@@ -73,6 +90,23 @@ export default {
       newStock(){
         this.action_done = false;
         this.stock_data = {};
+      },
+      insertStock(){
+        var data = {
+            stock_symbol: this.stock_data.stock_symbol,
+            open_price: this.stock_data.open_price,
+            close_price: this.stock_data.close_price
+        };
+        findataservice.insertstock(data) 
+        .then( response => {
+            console.log(response.data);
+            response.end;
+            this.action_done = true;
+        }
+        )
+        .catch(e => {
+              console.log(e);
+          });
       },
       updateStock(){
         var data = {
@@ -111,6 +145,36 @@ export default {
             stock_symbol: this.stock_data.stock_symbol,
         };
         findataservice.countstock(data) 
+        .then( response => {
+            console.log(response.data);
+            response.end;
+            this.action_done = true;
+        }
+        )
+        .catch(e => {
+              console.log(e);
+          });
+      },
+      maxStockPrice(){
+        /*var data = {
+            stock_symbol: this.stock_data.stock_symbol,
+        };*/
+        findataservice.maxstockprice() 
+        .then( response => {
+            console.log(response.data);
+            response.end;
+            this.action_done = true;
+        }
+        )
+        .catch(e => {
+              console.log(e);
+          });
+      },
+      minStockPrice(){
+        /*var data = {
+            stock_symbol: this.stock_data.stock_symbol,
+        };*/
+        findataservice.minstockprice() 
         .then( response => {
             console.log(response.data);
             response.end;

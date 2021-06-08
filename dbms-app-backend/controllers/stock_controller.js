@@ -23,41 +23,15 @@ exports.create = (symbol, create_data) => {
         console.log(err);
     })                 
 };
-
-exports.getBySymbol = (enter_symbol) =>{
-    return Stock.findByPk(enter_symbol,{
-        include: Option
-    })
-    .then(data =>{
-        console.log(data);
-        return data
-    })
-    .catch(err => {
-        console.log(err);
-    })
-}
-
-exports.getStockByEnterpiseSymbol = (enter_symbol) =>{
-    /*return Stock.findByPk(enter_symbol,{
-        include: Enterprise
-    })
-    .then(data =>{
-        console.log(data);
-        return data
-    })
-    .catch(err => {
-        console.log(err);
-    })*/
-}
-
-exports.getAll = (req, res) => {
-    const stock_symbol = req.query.stock_symbol;
-    console.log(stock_symbol);
-    var cond = stock_symbol ? { stock_symbol: stock_symbol} : null;
-    console.log(cond);
-    Stock.findAll({
-        where: cond// SELECT * FROM stock WHERE stock_symbol = stockSymbol
-    })
+// INSERT new stock
+exports.insertStock = (req, res) => {
+    const stock = {
+        stock_symbol: req.body.stock_symbol,
+        open_price: req.body.open_price,
+        close_price: req.body.close_price,
+        enterprise_symbol: req.body.enterprise_symbol
+    };
+    Stock.create(stock)
     .then(data =>{
         console.log(data);
         res.send(data);
@@ -69,8 +43,22 @@ exports.getAll = (req, res) => {
         })
     })
 };
-
-exports.getStockSymbol = (req, res) => {
+// SELECT * FROM stocks
+exports.getAll = (req, res) => {
+    Stock.findAll()
+    .then(data =>{
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving stocks"
+        })
+    })
+};
+// SELECT * FROM stocks WHERE stock_symbol =
+exports.getbyStockSymbol = (req, res) => {
     const stockSymbol = req.params.stock_symbol;
     Stock.findAll({
         where:{
@@ -87,10 +75,9 @@ exports.getStockSymbol = (req, res) => {
         })
     })
 };
-
+// UPDATE
 exports.updatebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;
-  
     Stock.update(req.body, {
       where: { stock_symbol: stock_symbol }
     })
@@ -111,7 +98,7 @@ exports.updatebySymbol = (req, res) => {
         });
       });
 };
-
+// DELETE
 exports.deletebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;
   
@@ -135,6 +122,52 @@ exports.deletebySymbol = (req, res) => {
         });
       });
 };
+// SELECT MAX(high_price) FROM stock WHERE stock_symbol = stock_symbol
+exports.getMaxbyStockSymbol = (res) =>{
+    Stock.max('open_price')
+    .then(data =>{
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving max open price"
+        })
+    })
+};
+// SELECT MIN(high_price) FROM stock WHERE stock_symbol = stock_symbol
+exports.getMinbyStockSymbol = (req, res) =>{
+    const stockSymbol = req.params.stock_symbol
+    Stock.min('close_price').then(data =>{
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving min open price"
+        })
+    })
+}
+
+
+
+
+exports.getBySymbol = (enter_symbol) =>{
+    return Stock.findByPk(enter_symbol,{
+        include: Option
+    })
+    .then(data =>{
+        console.log(data);
+        return data
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+
 exports.countAllStock = async(req, res) => {
     try{
         let amount

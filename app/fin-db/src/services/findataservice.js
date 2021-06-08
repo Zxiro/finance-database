@@ -18,7 +18,10 @@ class findataservice{
     }
     getallFuture(){
       return http.get("/");
-    } */   
+    } */ 
+    insertstock(data){
+      return http.post("/stocks/insert", data);
+    }  
     updatestock(data){
       return http.post("/stocks/update", data);
     }
@@ -28,12 +31,20 @@ class findataservice{
     countstock(data){
       return http.post("/stocks/count", data);
     }
+    maxstockprice(){
+      return http.get("/stocks/max");
+    }
+    minstockprice(){
+      return http.get("/stocks/min");
+    }
     raw_getbysymbol(sql){
       return http.post("/stocks/raw", sql);
     }
     getbysymbol(stock_symbol){
-      return http.get(`/stocks/${stock_symbol}`);
+      return http.get(`/stocks/symbol/${stock_symbol}`);
     }
+
+
     enter_getbysymbol(stock_symbol){
       return http.get(`/enterprises/${stock_symbol}`);
     }

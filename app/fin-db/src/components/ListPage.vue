@@ -57,7 +57,6 @@
           :class="{ active: index == currentIndex }"
           v-for="(product, index) in entities"
           :key="index"
-          @click="setActiveTutorial(product, index)"
         >
           {{ product.stock_symbol }}
         </li>

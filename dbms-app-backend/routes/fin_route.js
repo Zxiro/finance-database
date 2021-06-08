@@ -6,7 +6,10 @@ module.exports = app => { // set the corresponding method when getting different
    
     // Retrive data by symbol
     router.get("/stocks", stocks.getAll);
-    router.get("/stocks/:stock_symbol", stocks.getStockSymbol);
+    router.get("/stocks/symbol/:stock_symbol", stocks.getbyStockSymbol);
+    router.get("/stocks/max", stocks.getMaxbyStockSymbol);
+    router.get("/stocks/min", stocks.getMinbyStockSymbol);
+    router.post("/stocks/insert", stocks.insertStock);
     router.post("/stocks/update", stocks.updatebySymbol);
     router.post("/stocks/delete", stocks.deletebySymbol);
     router.post("/stocks/count", stocks.countAllStock);
