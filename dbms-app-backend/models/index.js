@@ -35,13 +35,18 @@ db.enterprise.hasOne(db.stock, {
   foreignKey: 'enterprise_symbol',
   allowNull: false
 });
-db.stock.belongsTo(db.enterprise);
+db.stock.belongsTo(db.enterprise, {
+  foreignKey: 'enterprise_symbol',
+  allowNull: false
+});
 
 // Bonds has enterprise_symbol as FK (1 to many)
 db.enterprise.hasMany(db.bond, {
   foreignKey: 'enterprise_symbol'
 });
-db.bond.belongsTo(db.enterprise);
+db.bond.belongsTo(db.enterprise, {
+  foreignKey: 'enterprise_symbol'
+});
 
 
 
@@ -52,12 +57,16 @@ db.bond.belongsTo(db.enterprise);
 db.stock.hasMany(db.option, {
   foreignKey: 'stock_symbol'
 });
-db.option.belongsTo(db.stock);
+db.option.belongsTo(db.stock, {
+  foreignKey: 'stock_symbol'
+});
 // Bonds has enterprise_symbol as FK (1 to many)
 db.stock.hasMany(db.future, {
   foreignKey: 'stock_symbol'
 });
-db.future.belongsTo(db.stock);
+db.future.belongsTo(db.stock, {
+  foreignKey: 'stock_symbol'
+});
 
 
 

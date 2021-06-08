@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize)=>{
             type: Sequelize.INTEGER
         },
         */
-    });
+    },{timestamps: false});
     return Stock;
 };
 //This Sequelize Model represents stocks table in PostgreSQL database. 

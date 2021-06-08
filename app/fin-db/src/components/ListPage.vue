@@ -10,9 +10,9 @@
       <option>future</option>
     </select>
   </div>
-  <div v-if="type" class="container-fluid mt-5">
+  <!-- div v-if="type" class="container-fluid mt-5">
     <router-view></router-view>
-  </div>
+  </div -->
     <div class="col-md-6">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by symbol"
@@ -35,37 +35,28 @@
         </div>
        </div>
     </div>
-    
-    <div class="col-md-6">
-      <h4>Stock</h4>
-      <div>
-        <label><strong>stock_symbol:</strong></label> {{ entities.stock_symbol }}
-      </div>
-      <div>
-        <label><strong>open_price:</strong></label> {{ entities.open_price }}
-      </div>
-      <div>
-        <label><strong>close_price:</strong></label> {{ entities.close_price }}
-      </div>
+  </div>
       <!-- router-link :to="stocks/" class="badge badge-warning">Edit</router-link-->
-    </div>
-
-    <div class="col-md-6">
-      <h4>Tutorials List</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
-          :class="{ active: index == currentIndex }"
-          v-for="(product, index) in entities"
-          :key="index"
-        >
-          {{ product.stock_symbol }}
-        </li>
-      </ul>
-
-      <!-- button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
-        Remove All
-      </button-->
-    </div>
+    <div>
+      <table class="table table table-dark table-hover">
+        <thead>
+          <tr>
+            <th
+              v-for="(feature, index) in entities[0]"
+              :key = "index"
+            >{{index}}</th></tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(product, index) in entities"
+            :key = "index"
+          ><td 
+            v-for="(feature, index_) in product"
+            :key = "index_"
+          >{{feature}}</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 </template>
 

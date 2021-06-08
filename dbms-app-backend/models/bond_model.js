@@ -4,6 +4,6 @@ module.exports = (sequelize, Sequelize)=>{
             type: Sequelize.INTEGER,
             primaryKey: true
         }
-    });
+    },{timestamps: false});
     return bond;
 };
