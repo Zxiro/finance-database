@@ -113,8 +113,7 @@ export default {
         var data = {
             stock_symbol: this.stock_data.stock_symbol,
             open_price: this.stock_data.open_price,
-            close_price: this.stock_data.close_price,
-            enterprise_symbol: this.stock_data.enterprise_symbol
+            close_price: this.stock_data.close_price
         };
         findataservice.updatestock(data) 
         .then( response => {

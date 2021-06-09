@@ -7,6 +7,15 @@ class findataservice{
     getallStock(){
       return http.get("/stocks");
     }
+    getbysymbol(stock_symbol){
+      return http.get(`/stocks/symbol/${stock_symbol}`);
+    }
+    getbyInsymbol(data){
+      return http.post("/stocks/in", data);
+    }
+    getbyNotInsymbol(data){
+      return http.post("/stocks/not_in", data);
+    }
     /*getallBond(){
       return http.get("/bonds");
     }
@@ -39,9 +48,6 @@ class findataservice{
     }
     raw_getbysymbol(sql){
       return http.post("/stocks/raw", sql);
-    }
-    getbysymbol(stock_symbol){
-      return http.get(`/stocks/symbol/${stock_symbol}`);
     }
 
 

@@ -1,6 +1,6 @@
 <template>
 <div class="list row">
-  <div id="type_selector" class="form-group col-ml-8">
+  <div id="type_selector" class="form-group col-md-12">
     <label for="type">Select list:</label>
     <select class="form-control" v-model="type">
       <option>stock</option>
@@ -10,19 +10,96 @@
       <option>future</option>
     </select>
   </div>
-  <!-- div v-if="type" class="container-fluid mt-5">
-    <router-view></router-view>
-  </div -->
-    <div class="col-md-6">
+
+  <div v-if="type">
+  <!--div v-if="type" class="container-fluid mt-5">
+    <router-view></router-view-->
+    <div class="col-md-12">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by symbol"
-          v-model="stock_symbol"/>
+          v-model="primaryKey"/>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"
-            @click="retrieveEnterprise()">
+            @click="onclickPKsearch()">
             Search
           </button>
         </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Search Multiple</label>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button"
+            @click="onclickInsearch()">
+            Search
+          </button>
+        </div>
+      <div id = "in_group" class="form-group row row-m-1">
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              required
+              v-model="in_condtion[0]"
+            />
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              id="close-price"
+              required
+              v-model="in_condtion[1]"
+              name="close-price"
+            />
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              id="close-price"
+              required
+              v-model="in_condtion[2]"
+              name="close-price"
+            />
+          </div>
+      </div>
+       <label class="col-sm-4 col-form-label">Search Multiple Not IN</label>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button"
+            @click="onclickNotInsearch()">
+            Search
+          </button>
+        </div>
+      <div id = "in_group" class="form-group row row-m-1">
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              required
+              v-model="not_in_condtion[0]"
+            />
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              id="close-price"
+              required
+              v-model="not_in_condtion[1]"
+              name="close-price"
+            />
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              id="close-price"
+              required
+              v-model="not_in_condtion[2]"
+              name="close-price"
+            />
+          </div>
+      </div>
       </div>
        <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by raw SQL"
@@ -33,6 +110,7 @@
             Search
           </button>
         </div>
+        
        </div>
     </div>
   </div>
@@ -50,13 +128,12 @@
           <tr
             v-for="(product, index) in entities"
             :key = "index"
-          ><td 
-            v-for="(feature, index_) in product"
-            :key = "index_"
-          >{{feature}}</td>
+          ><td v-for="(attr, index_) in product"
+            :key = "index_">{{attr}}</td>
           </tr>
         </tbody>
       </table>
+  </div>
   </div>
 </template>
 
@@ -70,7 +147,9 @@ export default {
     return {
       type: "",
       entities: [],
-      stock_symbol: "",
+      in_condtion: [],
+      not_in_condtion: [],
+      primaryKey: "",
       sql: "",
       currentIndex: -1,
       currentProduct: null
@@ -156,11 +235,85 @@ export default {
           console.log(e);
         });
     },
+    onclickPKsearch(){
+      var value = this.type;
+      if(value == 'stock'){
+        this.retrieveStocks();
+      }
+      /*if(value == 'bond'){
+        this.retrieveAllBondData();
+      }
+      if(value == 'enterprise'){
+        this.retrieveAllEnterpriseData();
+      }
+      if(value == 'option'){
+        this.retrieveAllOptionData();
+      }
+      if(value == 'future'){
+        this.retrieveAllFutureData();
+      }*/
+    },
+    onclickInsearch(){
+      var value = this.type;
+      if(value == 'stock'){
+        this.retrieveInStocks();
+      }
+      /*if(value == 'bond'){
+        this.retrieveAllBondData();
+      }
+      if(value == 'enterprise'){
+        this.retrieveAllEnterpriseData();
+      }
+      if(value == 'option'){
+        this.retrieveAllOptionData();
+      }
+      if(value == 'future'){
+        this.retrieveAllFutureData();
+      }*/
+    },
+    onclickNotInsearch(){
+      var value = this.type;
+      if(value == 'stock'){
+        this.retrieveNotInStocks();
+      }
+      /*if(value == 'bond'){
+        this.retrieveAllBondData();
+      }
+      if(value == 'enterprise'){
+        this.retrieveAllEnterpriseData();
+      }
+      if(value == 'option'){
+        this.retrieveAllOptionData();
+      }
+      if(value == 'future'){
+        this.retrieveAllFutureData();
+      }*/
+    },
     retrieveStocks() {
-      var stock_symbol = this.stock_symbol;
+      var stock_symbol = this.primaryKey;
       findataservice.getbysymbol(stock_symbol)
         .then(response => {
-          this.entities = response.data[0];
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveInStocks() {
+      findataservice.getbyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveNotInStocks() {
+      findataservice.getbyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
           console.log(this.entities);
         })
         .catch(e => {
@@ -244,5 +397,8 @@ export default {
 }
 .container-fluid {
   height: 50%;
+}
+#in_group{
+  margin: auto;
 }
 </style>

@@ -23,15 +23,9 @@ exports.create = (symbol, create_data) => {
         console.log(err);
     })                 
 };
-// INSERT new stock
-exports.insertStock = (req, res) => {
-    const stock = {
-        stock_symbol: req.body.stock_symbol,
-        open_price: req.body.open_price,
-        close_price: req.body.close_price,
-        enterprise_symbol: req.body.enterprise_symbol
-    };
-    Stock.create(stock)
+// SELECT * FROM stocks
+exports.getAll = (req, res) => {
+    Stock.findAll()
     .then(data =>{
         console.log(data);
         res.send(data);
@@ -43,9 +37,48 @@ exports.insertStock = (req, res) => {
         })
     })
 };
-// SELECT * FROM stocks
-exports.getAll = (req, res) => {
-    Stock.findAll()
+// SELECT stock by IN
+exports.getbyInStockSymbol = (req, res) => {
+    Stock.findAll({
+        where:{
+            stock_symbol: req.body
+        }
+    }).then(data =>{
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving stocks"
+        })
+    })
+}
+//
+exports.getbyNotInStockSymbol = (req, res) => {
+    Stock.findAll({
+        where:{stock_symbol: {[Op.notIn]: req.body}}
+    }).then(data =>{
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: 
+                err.message || "Some error occurred while retrieving stocks"
+        })
+    })
+}
+// INSERT new stock
+exports.insertStock = (req, res) => {
+    const stock = {
+        stock_symbol: req.body.stock_symbol,
+        open_price: req.body.open_price,
+        close_price: req.body.close_price,
+        enterprise_symbol: req.body.enterprise_symbol
+    };
+    console.log(stock)
+    return Stock.create(stock)
     .then(data =>{
         console.log(data);
         res.send(data);
@@ -78,7 +111,11 @@ exports.getbyStockSymbol = (req, res) => {
 // UPDATE
 exports.updatebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;
-    Stock.update(req.body, {
+    const update_data = {
+        open_price: req.body.open_price,
+        close_price: req.body.close_price
+    }
+    Stock.update(update_data, {
       where: { stock_symbol: stock_symbol }
     })
       .then(num => {

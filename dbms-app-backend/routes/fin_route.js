@@ -9,6 +9,8 @@ module.exports = app => { // set the corresponding method when getting different
     router.get("/stocks/symbol/:stock_symbol", stocks.getbyStockSymbol);
     router.get("/stocks/max", stocks.getMaxbyStockSymbol);
     router.get("/stocks/min", stocks.getMinbyStockSymbol);
+    router.post("/stocks/in", stocks.getbyInStockSymbol);
+    router.post("/stocks/not_in", stocks.getbyNotInStockSymbol);
     router.post("/stocks/insert", stocks.insertStock);
     router.post("/stocks/update", stocks.updatebySymbol);
     router.post("/stocks/delete", stocks.deletebySymbol);
