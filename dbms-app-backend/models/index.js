@@ -32,13 +32,27 @@ db.future = require("./future_model.js")(sequelize, Sequelize);
 
 // Stock has enterprise_symbol as FK (1 to 1)
 db.enterprise.hasOne(db.stock, {
+  as:'public',
   foreignKey: 'enterprise_symbol',
   allowNull: false
 });
 db.stock.belongsTo(db.enterprise, {
+  as:'public',
   foreignKey: 'enterprise_symbol',
   allowNull: false
 });
+// long stcok table to concat to many to many relationship (many to many)
+db.enterprise.belongsToMany(db.stock, {
+  as:'long',
+  through: "long_stock",
+  foreignKey: 'enterprise_symbol',
+});
+db.stock.belongsToMany(db.enterprise, {
+  as:'long',
+  through: "long_stock",
+  foreignKey: 'stock_symbol',
+});
+
 
 // Bonds has enterprise_symbol as FK (1 to many)
 db.enterprise.hasMany(db.bond, {
@@ -47,6 +61,7 @@ db.enterprise.hasMany(db.bond, {
 db.bond.belongsTo(db.enterprise, {
   foreignKey: 'enterprise_symbol'
 });
+
 
 
 

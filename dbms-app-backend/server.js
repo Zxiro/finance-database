@@ -37,11 +37,22 @@ const buildData = async () => {
     const enter1 = await enterprise_controller.create({
       enterprise_symbol: 9999
     });
+    const enter2 = await enterprise_controller.create({
+      enterprise_symbol: 9998
+    });
     const stock1 = await stock_controller.create(enter1.enterprise_symbol, {
       stock_symbol: 2330,
       open_price: 600,
       close_price:50
     });
+    const stock2 = await stock_controller.create(enter2.enterprise_symbol, {
+      stock_symbol: 2454,
+      open_price: 900,
+      close_price:90
+    });
+    await enterprise_controller.addLongStock(stock1.stock_symbol, enter1.enterprise_symbol);
+    await enterprise_controller.addLongStock(stock2.stock_symbol, enter1.enterprise_symbol);
+    await enterprise_controller.addLongStock(stock2.stock_symbol, enter2.enterprise_symbol);
     const option1_1 = await option_controller.create(stock1.stock_symbol, {
       option_symbol: 12330
     });
@@ -60,14 +71,14 @@ const buildData = async () => {
     const bond3 = await bond_controller.create(enter1.enterprise_symbol, {
       bond_symbol: 33
     });
-    const test1 = await enterprise_controller.getBySymbol(enter1.enterprise_symbol)
+    const test1 = await enterprise_controller.getlongBySymbol(enter1.enterprise_symbol)
     console.log(
-      "Enterprise with its all bitch=",
+      "Enterprise with its long=",
       JSON.stringify(test1, null, 2)
     );
-    const test2 = await stock_controller.getBySymbol(stock1.stock_symbol)
+    const test2 = await enterprise_controller.getpublicBySymbol(enter1.enterprise_symbol)
     console.log(
-      "Stock with its all bitch=",
+      "Enterprise with its public=",
       JSON.stringify(test2, null, 2)
     );
   }catch(err){

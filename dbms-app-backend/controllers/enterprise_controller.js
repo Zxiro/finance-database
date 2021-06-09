@@ -5,7 +5,20 @@ const Enterprise = db.enterprise; // call stocks table in model
 const Stock = db.stock;
 const Bond = db.bond;
 const Op = db.Sequelize.Op;
-
+exports.addLongStock = (stock_symbol, enterprise_symbol) => {
+  return Enterprise.findByPk(enterprise_symbol)
+  .then((enterprise) => {
+    return Stock.findByPk(stock_symbol)
+    .then((stock) =>{
+      enterprise.addLong(stock);
+      console.log(`>> added Stock id=${stock.stock_symbol} to Enterprise id=${enterprise.enterprise_symbol}`);
+      return enterprise; 
+    });
+  })
+  .catch((err) => {
+    console.log(">> Error while adding Stock to Enterprise: ", err);
+  });
+};
 //Using Sequelize op
 exports.create = (create_data) => {
     // Create a stock table 
@@ -19,9 +32,14 @@ exports.create = (create_data) => {
         console.log(err);
     });                
 }
-exports.getBySymbol = (enter_symbol) =>{
+exports.getlongBySymbol = (enter_symbol) =>{
     return Enterprise.findByPk(enter_symbol,{
-        include: Bond
+        include:[
+          {
+            model: Stock,
+            as: "long"
+          }
+        ]
     })
     .then(data =>{
         console.log(data);
@@ -30,6 +48,23 @@ exports.getBySymbol = (enter_symbol) =>{
     .catch(err => {
         console.log(err);
     })
+}
+exports.getpublicBySymbol = (enter_symbol) =>{
+  return Enterprise.findByPk(enter_symbol,{
+      include:[
+        {
+          model: Stock,
+          as: "public"
+        }
+      ]
+  })
+  .then(data =>{
+      console.log(data);
+      return data
+  })
+  .catch(err => {
+      console.log(err);
+  })
 }
 exports.getEnterpriseBySymbol = (symbol) => {
     Enterprise.findAll({
