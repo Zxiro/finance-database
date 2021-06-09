@@ -12,6 +12,9 @@
         <li class="nav-item">
           <router-link to="/bonds" class="nav-link">bonds</router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/options" class="nav-link">options</router-link>
+        </li>
       </div>
     </nav>
     <div class="container-fluid mt-5">

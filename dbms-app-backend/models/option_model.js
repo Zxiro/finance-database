@@ -3,6 +3,12 @@ module.exports = (sequelize, Sequelize)=>{
         option_symbol:{
             type: Sequelize.INTEGER,
             primaryKey: true
+        },
+        open_price:{
+            type: Sequelize.INTEGER
+        },
+        close_price:{
+            type: Sequelize.INTEGER
         }
     },{timestamps: false});
     return option;

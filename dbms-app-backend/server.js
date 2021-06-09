@@ -54,22 +54,49 @@ const buildData = async () => {
     await enterprise_controller.addLongStock(stock2.stock_symbol, enter1.enterprise_symbol);
     await enterprise_controller.addLongStock(stock2.stock_symbol, enter2.enterprise_symbol);
     const option1_1 = await option_controller.create(stock1.stock_symbol, {
-      option_symbol: 12330
+      option_symbol: 12330,
+      open_price: 10,
+      close_price:12
     });
     const option1_2 = await option_controller.create(stock1.stock_symbol, {
-      option_symbol: 22330
+      option_symbol: 22330,
+      open_price: 13,
+      close_price:14
     });
     const option1_3 = await option_controller.create(stock1.stock_symbol, {
-      option_symbol: 32330
+      option_symbol: 32330,
+      open_price: 15,
+      close_price:16
     });
-    const bond1 = await bond_controller.create(enter1.enterprise_symbol, {
-      bond_symbol: 11
+    const bond1_1 = await bond_controller.create(enter1.enterprise_symbol, {
+      bond_symbol: 11,
+      open_price: 100,
+      close_price:120
     });
-    const bond2 = await bond_controller.create(enter1.enterprise_symbol, {
-      bond_symbol: 22
+    const bond1_2 = await bond_controller.create(enter1.enterprise_symbol, {
+      bond_symbol: 22,
+      open_price: 210,
+      close_price:230
     });
-    const bond3 = await bond_controller.create(enter1.enterprise_symbol, {
-      bond_symbol: 33
+    const bond1_3 = await bond_controller.create(enter1.enterprise_symbol, {
+      bond_symbol: 33,
+      open_price: 320,
+      close_price:340
+    });
+    const bond2_1 = await bond_controller.create(enter2.enterprise_symbol, {
+      bond_symbol: 1,
+      open_price: 100,
+      close_price:120
+    });
+    const bond2_2 = await bond_controller.create(enter2.enterprise_symbol, {
+      bond_symbol: 2,
+      open_price: 210,
+      close_price:230
+    });
+    const bond2_3 = await bond_controller.create(enter2.enterprise_symbol, {
+      bond_symbol: 3,
+      open_price: 320,
+      close_price:340
     });
     const test1 = await enterprise_controller.getlongBySymbol(enter1.enterprise_symbol)
     console.log(

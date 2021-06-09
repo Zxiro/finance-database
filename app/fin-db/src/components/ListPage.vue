@@ -188,9 +188,7 @@ export default {
         });
     },
     retrieveAllBondData() {
-      var type = this.type;
-      console.log(type);
-      findataservice.getall(type)
+      findataservice.getallBond()
         .then(response => {
           this.entities = response.data;
           console.log(response.data);
@@ -200,9 +198,7 @@ export default {
         });
     },
     retrieveAllEnterpriseData() {
-      var type = this.type;
-      console.log(type);
-      findataservice.getall(type)
+      findataservice.getall()
         .then(response => {
           this.entities = response.data;
           console.log(response.data);
@@ -212,9 +208,7 @@ export default {
         });
     },
     retrieveAllOptionData() {
-      var type = this.type;
-      console.log(type);
-      findataservice.getall(type)
+      findataservice.getallOption()
         .then(response => {
           this.entities = response.data;
           console.log(response.data);
@@ -240,14 +234,14 @@ export default {
       if(value == 'stock'){
         this.retrieveStocks();
       }
-      /*if(value == 'bond'){
-        this.retrieveAllBondData();
-      }
-      if(value == 'enterprise'){
-        this.retrieveAllEnterpriseData();
+      if(value == 'bond'){
+        this.retrieveBonds();
       }
       if(value == 'option'){
-        this.retrieveAllOptionData();
+        this.retrieveOptions();
+      }/*
+      if(value == 'enterprise'){
+        this.retrieveAllEnterpriseData();
       }
       if(value == 'future'){
         this.retrieveAllFutureData();
@@ -258,14 +252,14 @@ export default {
       if(value == 'stock'){
         this.retrieveInStocks();
       }
-      /*if(value == 'bond'){
-        this.retrieveAllBondData();
-      }
-      if(value == 'enterprise'){
-        this.retrieveAllEnterpriseData();
+      if(value == 'bond'){
+        this.retrieveInBonds();
       }
       if(value == 'option'){
-        this.retrieveAllOptionData();
+        this.retrieveInOptions();
+      }/*
+      if(value == 'enterprise'){
+        this.retrieveAllEnterpriseData();
       }
       if(value == 'future'){
         this.retrieveAllFutureData();
@@ -276,14 +270,14 @@ export default {
       if(value == 'stock'){
         this.retrieveNotInStocks();
       }
-      /*if(value == 'bond'){
-        this.retrieveAllBondData();
-      }
-      if(value == 'enterprise'){
-        this.retrieveAllEnterpriseData();
+      if(value == 'bond'){
+        this.retrieveNotInBonds();
       }
       if(value == 'option'){
-        this.retrieveAllOptionData();
+        this.retrieveNotInOptions();
+      }/*
+      if(value == 'enterprise'){
+        this.retrieveAllEnterpriseData();
       }
       if(value == 'future'){
         this.retrieveAllFutureData();
@@ -291,7 +285,29 @@ export default {
     },
     retrieveStocks() {
       var stock_symbol = this.primaryKey;
-      findataservice.getbysymbol(stock_symbol)
+      findataservice.getstockbysymbol(stock_symbol)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveBonds() {
+      var bond_symbol = this.primaryKey;
+      findataservice.getbondbysymbol(bond_symbol)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveOptions() {
+      var option_symbol = this.primaryKey;
+      findataservice.getoptionbysymbol(option_symbol)
         .then(response => {
           this.entities = response.data;
           console.log(this.entities);
@@ -301,7 +317,7 @@ export default {
         });
     },
     retrieveInStocks() {
-      findataservice.getbyInsymbol(this.in_condtion)
+      findataservice.getstockbyInsymbol(this.in_condtion)
         .then(response => {
           this.entities = response.data;
           console.log(this.entities);
@@ -311,7 +327,47 @@ export default {
         });
     },
     retrieveNotInStocks() {
-      findataservice.getbyNotInsymbol(this.not_in_condtion)
+      findataservice.getstockbyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveInBonds() {
+      findataservice.getbondbyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveNotInBonds() {
+      findataservice.getbondbyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveInOptions() {
+      findataservice.getoptionbyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveNotInOptions() {
+      findataservice.getoptionbyNotInsymbol(this.not_in_condtion)
         .then(response => {
           this.entities = response.data;
           console.log(this.entities);

@@ -2,15 +2,15 @@
     <div class="submit-form">
       <div v-if="!action_done">
           <div class="form-group row">
-            <label for="bond-symbol" class="col-sm-4 col-form-label">Bond Symbol</label>
+            <label for="option-symbol" class="col-sm-4 col-form-label">Option Symbol</label>
               <div class="col-sm-8">
                 <input
                   type="text"
                   class="form-control"
-                  id="bond-symbol"
+                  id="option-symbol"
                   required
-                  v-model="bond_data.bond_symbol"
-                  name="bond-symbol"
+                  v-model="option_data.option_symbol"
+                  name="option-symbol"
                 />
             </div>
           </div>
@@ -22,50 +22,37 @@
                   class="form-control"
                   id="open-price"
                   required
-                  v-model="bond_data.open_price"
+                  v-model="option_data.open_price"
                   name="open-price"
                 />
             </div>
           </div>
           <div class="form-group row">
-            <label for="bond-symbol" class="col-sm-4 col-form-label">Close Price</label>
+            <label for="option-symbol" class="col-sm-4 col-form-label">Close Price</label>
               <div class="col-sm-8">
                 <input
                   type="text"
                   class="form-control"
                   id="close-price"
                   required
-                  v-model="bond_data.close_price"
+                  v-model="option_data.close_price"
                   name="close-price"
                 />
             </div>
-            <div class="form-group row">
-            <label for="bond-symbol" class="col-md-4 col-form-label">Enterprise Symbol</label>
-              <div class="col-md-4">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="enterprise-symbol"
-                  required
-                  v-model="bond_data.enterprise_symbol"
-                  name="enterprise-symbol"
-                />
-            </div>
-            </div>
           </div>
           <div class = "form-group col text-center mt-4">
-            <button @click="insertBond" class="btn btn-success row-sm-4">Insert</button>
-            <button @click="updateBond" class="btn btn-success row-sm-4">Edit</button>
-            <button @click="deleteBond" class="btn btn-success row-sm-4">Delete</button>
-            <button @click="countBond" class="btn btn-success row-sm-4">COUNT</button>
-            <button @click="maxBondPrice" class="btn btn-success row-sm-4">MAX</button>
-            <button @click="minBondPrice" class="btn btn-success row-sm-4">MIN</button>
-            <button @click="avgBondPrice" class="btn btn-success row-sm-4">AVG</button> 
+            <button @click="insertOption" class="btn btn-success row-sm-4">Insert</button>
+            <button @click="updateOption" class="btn btn-success row-sm-4">Edit</button>
+            <button @click="deleteOption" class="btn btn-success row-sm-4">Delete</button>
+            <button @click="countOption" class="btn btn-success row-sm-4">COUNT</button>
+            <button @click="maxOptionPrice" class="btn btn-success row-sm-4">MAX</button>
+            <button @click="minOptionPrice" class="btn btn-success row-sm-4">MIN</button>
+            <button @click="avgOptionPrice" class="btn btn-success row-sm-4">AVG</button> 
           </div>
       </div>
       <div v-else>
         <h4>Operation finished!</h4>
-        <button class="btn btn-success" @click="newBond">Return</button>
+        <button class="btn btn-success" @click="newOption">Return</button>
       </div>
     </div>
 </template>
@@ -74,32 +61,30 @@
 import findataservice from "../services/findataservice.js";
 
 export default {
-    name: "add-bond",
+    name: "add-option",
     data(){
       return{
-        bond_data:{
+        option_data:{
         id: null,
-        bond_symbol: "",
+        option_symbol: "",
         open_price: "",
         close_price: "",
-        enterprise_symbol: ""
         },
         action_done: false
       };// The data set that is going to pass to the server
     },
     methods: {
-      newBond(){
+      newOption(){
         this.action_done = false;
-        this.bond_data = {};
+        this.option_data = {};
       },
-      insertBond(){
+      insertOption(){
         var data = {
-            bond_symbol: this.bond_data.bond_symbol,
-            open_price: this.bond_data.open_price,
-            close_price: this.bond_data.close_price,
-            enterprise_symbol: this.bond_data.enterprise_symbol
+            option_symbol: this.option_data.option_symbol,
+            open_price: this.option_data.open_price,
+            close_price: this.option_data.close_price
         };
-        findataservice.insertbond(data) 
+        findataservice.insertoption(data) 
         .then( response => {
             console.log(response.data);
             response.end;
@@ -110,13 +95,13 @@ export default {
               console.log(e);
           });
       },
-      updateBond(){
+      updateOption(){
         var data = {
-            bond_symbol: this.bond_data.bond_symbol,
-            open_price: this.bond_data.open_price,
-            close_price: this.bond_data.close_price
+            option_symbol: this.option_data.option_symbol,
+            open_price: this.option_data.open_price,
+            close_price: this.option_data.close_price
         };
-        findataservice.updatebond(data) 
+        findataservice.updateoption(data) 
         .then( response => {
             console.log(response.data);
             response.end;
@@ -127,11 +112,11 @@ export default {
               console.log(e);
           });
       },
-      deleteBond(){
+      deleteOption(){
         var data = {
-            bond_symbol: this.bond_data.bond_symbol,
+            option_symbol: this.option_data.option_symbol,
         };
-        findataservice.deletebond(data) 
+        findataservice.deleteoption(data) 
         .then( response => {
             console.log(response.data);
             response.end;
@@ -142,11 +127,11 @@ export default {
               console.log(e);
           });
       },
-      countBond(){
+      countOption(){
         var data = {
-            bond_symbol: this.bond_data.bond_symbol,
+            option_symbol: this.option_data.option_symbol,
         };
-        findataservice.countbond(data) 
+        findataservice.countoption(data) 
         .then( response => {
             console.log(response.data);
             response.end;
@@ -157,11 +142,11 @@ export default {
               console.log(e);
           });
       },
-      maxBondPrice(){
+      maxOptionPrice(){
         /*var data = {
-            Bond_symbol: this.Bond_data.Bond_symbol,
+            Option_symbol: this.Option_data.Option_symbol,
         };*/
-        findataservice.maxbondprice() 
+        findataservice.maxoptionprice() 
         .then( response => {
             console.log(response.data);
             response.end;
@@ -172,11 +157,11 @@ export default {
               console.log(e);
           });
       },
-      minBondPrice(){
+      minOptionPrice(){
         /*var data = {
-            Bond_symbol: this.Bond_data.Bond_symbol,
+            Option_symbol: this.Option_data.Option_symbol,
         };*/
-        findataservice.minbondprice() 
+        findataservice.minoptionprice() 
         .then( response => {
             console.log(response.data);
             response.end;
@@ -187,11 +172,11 @@ export default {
               console.log(e);
           });
       },
-      avgBondPrice(){
+      avgOptionPrice(){
         /*var data = {
-            Bond_symbol: this.Bond_data.Bond_symbol,
+            Option_symbol: this.Option_data.Option_symbol,
         };*/
-        findataservice.avgbondprice() 
+        findataservice.avgoptionprice() 
         .then( response => {
             console.log(response.data);
             response.end;
