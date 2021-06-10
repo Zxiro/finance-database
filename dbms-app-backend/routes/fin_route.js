@@ -35,7 +35,7 @@ module.exports = app => { // set the corresponding method when getting different
     //router.post("/bonds/raw", bonds.raw_getBondSymbol);
 
     router.get("/options", options.getAll);
-    router.get("/options/symbol/:option_symbol", options.getbyOptionSymbol);
+    router.get("/option/symbol/:option_symbol", options.getbyOptionSymbol);
     router.get("/options/max", options.getMaxbyOptionSymbol);
     router.get("/options/min", options.getMinbyOptionSymbol);
     router.get("/options/avg", options.getAvgbyOptionSymbol);

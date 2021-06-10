@@ -22,8 +22,8 @@ class findataservice{
     deletestock(data){
       return http.post("/stocks/delete", data);
     }
-    countstock(data){
-      return http.post("/stocks/count", data);
+    countstock(){
+      return http.post("/stocks/count");
     }
     maxstockprice(){
       return http.get("/stocks/max");
