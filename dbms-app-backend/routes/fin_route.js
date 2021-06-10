@@ -20,8 +20,17 @@ module.exports = app => { // set the corresponding method when getting different
     router.post("/stocks/raw/dml", stocks.rawStockDml);
     router.post("/stocks/raw/ddl", stocks.rawStockDdl);
 
-    router.get("/enterprises/:stock_symbol", enterprises.getEnterpriseBySymbol);
-
+    router.get("/enterprises", enterprises.getAll);
+    router.get("/enterprises/symbol/:enterprise_symbol", enterprises.getbyEnterpriseSymbol);
+    router.post("/enterprises/in", enterprises.getbyInEnterpriseSymbol);
+    router.post("/enterprises/not_in", enterprises.getbyNotInEnterpriseSymbol);
+    router.post("/enterprises/insert", enterprises.insertEnterprise);
+    router.post("/enterprises/update", enterprises.updatebySymbol);
+    router.post("/enterprises/delete", enterprises.deletebySymbol);
+    router.post("/enterprises/count", enterprises.countAllEnterprise);
+    router.post("/enterprises/raw", enterprises.raw_getEnterpriseSymbol);
+    router.post("/enterprises/raw/dml", enterprises.rawEnterpriseDml);
+    router.post("/enterprises/raw/ddl", enterprises.rawEnterpriseDdl);
 
     router.get("/bonds", bonds.getAll);
     router.get("/bonds/symbol/:bond_symbol", bonds.getbyBondSymbol);

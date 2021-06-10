@@ -25,6 +25,8 @@ db.enterprise = require("./enterprise_model.js")(sequelize, Sequelize);
 db.bond = require("./bond_model.js")(sequelize, Sequelize);
 db.option = require("./option_model.js")(sequelize, Sequelize);
 db.future = require("./future_model.js")(sequelize, Sequelize);
+db.long_stock = require("./long_stock.js")(sequelize, Sequelize);
+db.short_stock = require("./short_stock.js")(sequelize, Sequelize);
 
 
 
@@ -50,6 +52,17 @@ db.enterprise.belongsToMany(db.stock, {
 db.stock.belongsToMany(db.enterprise, {
   as:'long',
   through: "long_stock",
+  foreignKey: 'stock_symbol',
+});
+// Short stcok table to concat to many to many relationship (many to many)
+db.enterprise.belongsToMany(db.stock, {
+  as:'short',
+  through: "short_stock",
+  foreignKey: 'enterprise_symbol',
+});
+db.stock.belongsToMany(db.enterprise, {
+  as:'short',
+  through: "short_stock",
   foreignKey: 'stock_symbol',
 });
 

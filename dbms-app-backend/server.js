@@ -40,6 +40,12 @@ const buildData = async () => {
     const enter2 = await enterprise_controller.create({
       enterprise_symbol: 9998
     });
+    const enter3 = await enterprise_controller.create({
+      enterprise_symbol: 9997
+    });
+    const enter4 = await enterprise_controller.create({
+      enterprise_symbol: 9996
+    });
     const stock1 = await stock_controller.create(enter1.enterprise_symbol, {
       stock_symbol: 2330,
       open_price: 600,
@@ -50,9 +56,22 @@ const buildData = async () => {
       open_price: 900,
       close_price:90
     });
-    await enterprise_controller.addLongStock(stock1.stock_symbol, enter1.enterprise_symbol);
-    await enterprise_controller.addLongStock(stock2.stock_symbol, enter1.enterprise_symbol);
-    await enterprise_controller.addLongStock(stock2.stock_symbol, enter2.enterprise_symbol);
+    const stock3 = await stock_controller.create(enter3.enterprise_symbol, {
+      stock_symbol: 2303,
+      open_price: 50,
+      close_price:80
+    });
+    const stock4 = await stock_controller.create(enter4.enterprise_symbol, {
+      stock_symbol: 2037,
+      open_price: 500,
+      close_price:650
+    });
+    await enterprise_controller.addLongStock(stock1.stock_symbol, enter1.enterprise_symbol, 50);
+    await enterprise_controller.addLongStock(stock2.stock_symbol, enter1.enterprise_symbol, 100);
+    await enterprise_controller.addLongStock(stock2.stock_symbol, enter2.enterprise_symbol, 150);
+    await enterprise_controller.addShortStock(stock3.stock_symbol, enter1.enterprise_symbol, 50);
+    await enterprise_controller.addShortStock(stock4.stock_symbol, enter1.enterprise_symbol, 100);
+    await enterprise_controller.addShortStock(stock4.stock_symbol, enter2.enterprise_symbol, 150);
     const option1_1 = await option_controller.create(stock1.stock_symbol, {
       option_symbol: 12330,
       open_price: 10,
@@ -103,9 +122,9 @@ const buildData = async () => {
       "Enterprise with its long=",
       JSON.stringify(test1, null, 2)
     );
-    const test2 = await enterprise_controller.getpublicBySymbol(enter1.enterprise_symbol)
+    const test2 = await enterprise_controller.getshortBySymbol(enter1.enterprise_symbol)
     console.log(
-      "Enterprise with its public=",
+      "Enterprise with its short=",
       JSON.stringify(test2, null, 2)
     );
   }catch(err){

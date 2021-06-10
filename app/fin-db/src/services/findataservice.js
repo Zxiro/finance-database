@@ -41,7 +41,39 @@ class findataservice{
       return http.post("/stocks/raw", sql);
     }
 
-
+    getallEnterprise(){
+      return http.get("/enterprises");
+    }
+    getenterprisebysymbol(enterprise_symbol){
+      return http.get(`/enterprises/symbol/${enterprise_symbol}`);
+    }
+    getenterprisebyInsymbol(data){
+      return http.post("/enterprises/in", data);
+    }
+    getenterprisebyNotInsymbol(data){
+      return http.post("/enterprises/not_in", data);
+    }
+    insertenterprise(data){
+      return http.post("/enterprises/insert", data);
+    }  
+    updateenterprise(data){
+      return http.post("/enterprises/update", data);
+    }
+    deleteenterprise(data){
+      return http.post("/enterprises/delete", data);
+    }
+    countenterprise(){
+      return http.post("/enterprises/count");
+    }
+    rawenterprisedml(sql){
+      return http.post("/enterprises/raw/dml", sql);
+    }
+    rawenterpriseddl(sql){
+      return http.post("/enterprises/raw/ddl", sql);
+    }
+    /*raw_getbysymbol(sql){
+      return http.post("/enterprises/raw", sql);
+    }*/
 
     getallBond(){
       return http.get("/bonds");
@@ -110,9 +142,7 @@ class findataservice{
     avgoptionprice(){
       return http.get("/options/avg")
     }
-    /*getallEnterprise(){
-      return http.get("/");
-    }
+    /*
     getallOption(){
       return http.get("/");
     }
@@ -120,10 +150,5 @@ class findataservice{
       return http.get("/");
     } */ 
     
-
-
-    enter_getbysymbol(stock_symbol){
-      return http.get(`/enterprises/${stock_symbol}`);
-    }
 }
 export default new findataservice();

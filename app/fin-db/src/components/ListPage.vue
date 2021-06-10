@@ -12,8 +12,6 @@
   </div>
 
   <div v-if="type">
-  <!--div v-if="type" class="container-fluid mt-5">
-    <router-view></router-view-->
     <div class="col-md-12">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by symbol"
@@ -198,7 +196,7 @@ export default {
         });
     },
     retrieveAllEnterpriseData() {
-      findataservice.getall()
+      findataservice.getallEnterprise()
         .then(response => {
           this.entities = response.data;
           console.log(response.data);
@@ -239,10 +237,10 @@ export default {
       }
       if(value == 'option'){
         this.retrieveOptions();
-      }/*
-      if(value == 'enterprise'){
-        this.retrieveAllEnterpriseData();
       }
+      if(value == 'enterprise'){
+        this.retrieveEnterprise();
+      }/*
       if(value == 'future'){
         this.retrieveAllFutureData();
       }*/
@@ -257,10 +255,10 @@ export default {
       }
       if(value == 'option'){
         this.retrieveInOptions();
-      }/*
-      if(value == 'enterprise'){
-        this.retrieveAllEnterpriseData();
       }
+      if(value == 'enterprise'){
+        this.retrieveInEnterprises();
+      }/*
       if(value == 'future'){
         this.retrieveAllFutureData();
       }*/
@@ -275,10 +273,11 @@ export default {
       }
       if(value == 'option'){
         this.retrieveNotInOptions();
-      }/*
-      if(value == 'enterprise'){
-        this.retrieveAllEnterpriseData();
       }
+      if(value == 'enterprise'){
+        this.retrieveNotInEnterprises();
+      }/*
+      
       if(value == 'future'){
         this.retrieveAllFutureData();
       }*/
@@ -288,6 +287,17 @@ export default {
       findataservice.getstockbysymbol(stock_symbol)
         .then(response => {
           this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrieveEnterprise() {
+      var enterprise_symbol = this.primaryKey;
+      findataservice.getenterprisebysymbol(enterprise_symbol)
+        .then(response => {
+          this.entities = response.data[0];
           console.log(this.entities);
         })
         .catch(e => {
@@ -376,17 +386,27 @@ export default {
           console.log(e);
         });
     },
-    retrieveEnterprise() {
-      var enterprise_symbol = this.stock_symbol;
-      findataservice.enter_getbysymbol(enterprise_symbol)
+    retrieveInEnterprises() {
+      findataservice.getenterprisebyInsymbol(this.in_condtion)
         .then(response => {
-          this.entities = response.data[0];
+          this.entities = response.data;
           console.log(this.entities);
         })
         .catch(e => {
           console.log(e);
         });
     },
+    retrieveNotInEnterprises() {
+      findataservice.getenterprisebyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    
     raw_retrieveStocks() {
       var sql = {
         "sql":this.sql
