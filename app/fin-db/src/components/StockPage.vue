@@ -30,6 +30,16 @@
               Update
             </button>
           </div>
+          <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search by raw SQL"
+            v-model="dml_sql"/>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button"
+              @click="rawStockDml()">
+              Search
+            </button>
+          </div>
+          </div>
           <nav class="navbar navbar-dark navbar-expand bg-dark">
                 <span class="navbar-brand mb-0 h1">Delete Stock</span>
           </nav>
@@ -51,6 +61,16 @@
                   Delete
                 </button>
             </div>
+          <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search by raw SQL"
+            v-model="dml_sql"/>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button"
+              @click="rawStockDml()">
+              Search
+            </button>
+          </div>
+          </div>
           <nav class="navbar navbar-dark navbar-expand bg-dark">
               <span class="navbar-brand mb-0 h1">Stock Data</span>
           </nav>
@@ -59,6 +79,19 @@
             <button @click="maxStockPrice" class="btn btn-success row-sm-4">MAX</button>
             <button @click="minStockPrice" class="btn btn-success row-sm-4">MIN</button>
           </div>
+          <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search by raw SQL"
+            v-model="ddl_sql"/>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button"
+              @click="rawStockDdl()">
+              Search
+            </button>
+          </div>
+          </div>
+        <div>
+          <label><strong>Ans:</strong></label>{{ddl_ans}}
+        </div>
         </div>
       </div> 
       <div v-else>
@@ -81,15 +114,9 @@ export default {
         close_price: "",
         enterprise_symbol: ""
         },
-        attr_list:[
-          "stock symbol", 
-          "open price",
-          "close price",
-          "enterprise symbol"
-        ],
-        max_price:"",
-        min_price:"",
-        stock_count:"",
+        dml_sql:"",
+        ddl_sql:"",
+        ddl_ans:"",
         action_done: false
       };// The data set that is going to pass to the server
     },
@@ -102,6 +129,8 @@ export default {
         close_price: "",
         enterprise_symbol: ""
         };
+        this.dml_sql="",
+        this.ddl_sql="";
       },
       insertStock(){
         var data = {
@@ -156,8 +185,10 @@ export default {
       countStock(){
         findataservice.countstock() 
         .then( response => {
-            console.log(response.data);
-            response.end;
+          this.ddl_ans = response.data;
+          console.log(response.data);
+          response.end;
+          this.action_done = true;
         }
         )
         .catch(e => {
@@ -167,8 +198,11 @@ export default {
       maxStockPrice(){
         findataservice.maxstockprice() 
         .then( response => {
-            console.log(response.data);
-            response.end;
+          this.ddl_ans = response.data;
+          console.log(this.ddl_ans);
+          this.action_done = true;
+          response.end;
+         
         }
         )
         .catch(e => {
@@ -176,18 +210,45 @@ export default {
           });
       },
       minStockPrice(){
-        /*var data = {
-            stock_symbol: this.stock_data.stock_symbol,
-        };*/
         findataservice.minstockprice() 
         .then( response => {
-            console.log(response.data);
-            response.end;
+          this.ddl_ans = response.data;
+          console.log(response.data);
+          response.end;
+          this.action_done = true;
         }
         )
         .catch(e => {
               console.log(e);
           });
+      },
+      rawStockDml(){
+        var sql = {
+          sql:this.dml_sql
+        }
+        findataservice.rawstockdml(sql)
+        .then(response => {
+          //this.entities = response.data["res"][0][0];
+          console.log(response);
+          response.end;
+          this.action_done = true;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      rawStockDdl(){
+        var sql = {
+          sql:this.ddl_sql
+        }
+        findataservice.rawstockddl(sql)
+        .then(response => {
+          this.ddl_ans = response.data["res"][0][0];
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
     }
 };
@@ -198,10 +259,6 @@ export default {
   .submit-form {
     width:100%;
     margin: auto;
-  }
-  .form-control{
-    -webkit-background-clip: padding-box;
-    mt:5px;
   }
   .form-check-input {
     -webkit-print-color-adjust: exact;
@@ -215,8 +272,5 @@ export default {
   .btn-success{
     margin-left: 10px;
     mr:10px;
-  }
-  .col-sm-8{
-    mt:5px;
   }
 </style>

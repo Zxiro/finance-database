@@ -160,36 +160,33 @@ exports.deletebySymbol = (req, res) => {
       });
 };
 // SELECT MAX(high_price) FROM stock WHERE stock_symbol = stock_symbol
-exports.getMaxbyStockSymbol = (res) =>{
-    Stock.max('open_price')
-    .then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving max open price"
-        })
-    })
+exports.getMaxbyStockSymbol = async(req, res) =>{
+    try{
+        let ans
+        ans = await Stock.max('close_price')
+        console.log(ans);
+        const max = {
+            "max":ans
+        }
+        res.send(max);
+    }catch(err){
+        console.log(err);
+    }
 };
 // SELECT MIN(high_price) FROM stock WHERE stock_symbol = stock_symbol
-exports.getMinbyStockSymbol = (req, res) =>{
-    const stockSymbol = req.params.stock_symbol
-    Stock.min('close_price').then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving min open price"
-        })
-    })
-}
-
-
-
+exports.getMinbyStockSymbol = async(req, res) =>{
+    try{
+        let ans
+        ans = await Stock.min('close_price')
+        console.log(ans);
+        const min = {
+            "min":ans
+        }
+        res.send(min);
+    }catch(err){
+        console.log(err);
+    }
+};
 
 exports.getBySymbol = (enter_symbol) =>{
     return Stock.findByPk(enter_symbol,{
@@ -233,6 +230,32 @@ exports.raw_getStockSymbol = async (req, res) => {
         StockSymbol = await db.sequelize.query(req.body.sql);
         const data = {
             "res":StockSymbol
+        }
+        console.log(data);
+        return res.send(data);
+    }catch(err){
+        console.log(err);
+    }
+}
+
+//Using raw SQL
+exports.rawStockDml = async (req, res) => { 
+    try{
+        console.log(req.body.sql);
+        await db.sequelize.query(req.body.sql);
+        return res.send();
+    }catch(err){
+        console.log(err);
+    }
+}
+//Using raw SQL
+exports.rawStockDdl = async (req, res) => { 
+    try{
+        let Ans;
+        console.log(req.body.sql);
+        Ans = await db.sequelize.query(req.body.sql);
+        const data = {
+            "res":Ans
         }
         console.log(data);
         return res.send(data);

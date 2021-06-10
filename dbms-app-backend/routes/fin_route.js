@@ -17,6 +17,8 @@ module.exports = app => { // set the corresponding method when getting different
     router.post("/stocks/delete", stocks.deletebySymbol);
     router.post("/stocks/count", stocks.countAllStock);
     router.post("/stocks/raw", stocks.raw_getStockSymbol);
+    router.post("/stocks/raw/dml", stocks.rawStockDml);
+    router.post("/stocks/raw/ddl", stocks.rawStockDdl);
 
     router.get("/enterprises/:stock_symbol", enterprises.getEnterpriseBySymbol);
 

@@ -31,6 +31,12 @@ class findataservice{
     minstockprice(){
       return http.get("/stocks/min");
     }
+    rawstockdml(sql){
+      return http.post("/stocks/raw/dml", sql);
+    }
+    rawstockddl(sql){
+      return http.post("/stocks/raw/ddl", sql);
+    }
     raw_getbysymbol(sql){
       return http.post("/stocks/raw", sql);
     }
