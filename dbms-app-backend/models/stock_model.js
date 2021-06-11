@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize)=>{
         },
         close_price:{
             type: Sequelize.INTEGER
+        },
+        volume:{
+            type: Sequelize.INTEGER,
         }
         /*
         high_price:{

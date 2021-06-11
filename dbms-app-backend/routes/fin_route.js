@@ -10,6 +10,9 @@ module.exports = app => { // set the corresponding method when getting different
     router.get("/stocks/symbol/:stock_symbol", stocks.getbyStockSymbol);
     router.get("/stocks/max", stocks.getMaxbyStockSymbol);
     router.get("/stocks/min", stocks.getMinbyStockSymbol);
+    router.get("/stocks/sum", stocks.getSumStockVolume);
+    router.get("/stocks/having", stocks.havingMaxOptionPriceStock);
+    router.get("/stocks/exist/:stock_symbol", stocks.getNotExistOption);
     router.post("/stocks/in", stocks.getbyInStockSymbol);
     router.post("/stocks/not_in", stocks.getbyNotInStockSymbol);
     router.post("/stocks/insert", stocks.insertStock);
@@ -22,12 +25,15 @@ module.exports = app => { // set the corresponding method when getting different
 
     router.get("/enterprises", enterprises.getAll);
     router.get("/enterprises/symbol/:enterprise_symbol", enterprises.getbyEnterpriseSymbol);
+    router.get("/enterprises/sum/:enterprise_symbol", enterprises.sumEnterpriseNetCash);
+    router.get("/enterprises/having", enterprises.havingMaxOpCashEnterperise);
     router.post("/enterprises/in", enterprises.getbyInEnterpriseSymbol);
     router.post("/enterprises/not_in", enterprises.getbyNotInEnterpriseSymbol);
     router.post("/enterprises/insert", enterprises.insertEnterprise);
     router.post("/enterprises/update", enterprises.updatebySymbol);
     router.post("/enterprises/delete", enterprises.deletebySymbol);
     router.post("/enterprises/count", enterprises.countAllEnterprise);
+    router.get("/enterprises/exist/:enterprise_symbol", enterprises.getExistBond);
     router.post("/enterprises/raw", enterprises.raw_getEnterpriseSymbol);
     router.post("/enterprises/raw/dml", enterprises.rawEnterpriseDml);
     router.post("/enterprises/raw/ddl", enterprises.rawEnterpriseDdl);

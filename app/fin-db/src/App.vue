@@ -17,7 +17,7 @@
         </li>
       </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
       <router-view /> <!-- Decide which component show in this part -->
     </div>
   </div>
@@ -41,6 +41,7 @@ export default {
 .container-fluid {
   height: 100%;
   width:100%;
-  background: #f0e68c;
+  background: whitesmoke;
+  padding:0px;
 }
 </style>

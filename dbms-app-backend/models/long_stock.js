@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize)=>{
         },
         enterprise_symbol:{
             type: Sequelize.INTEGER,
-        },
+        }
     },{timestamps: false});
     return long_stock;
 };

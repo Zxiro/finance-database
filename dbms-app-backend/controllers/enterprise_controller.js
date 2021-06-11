@@ -1,3 +1,4 @@
+const { group } = require('console');
 const { data } = require('jquery');
 const { type } = require('os');
 const db = require('../models');
@@ -11,6 +12,9 @@ exports.create = (symbol) => {
     // Create a enterprise table 
     const enterprise = {
         enterprise_symbol:symbol.enterprise_symbol,
+        operation_cash:symbol.operation_cash,
+        investing_cash:symbol.investing_cash,
+        financing_cash:symbol.financing_cash
     };
     // Save enterprise in the postgreSQL database
     return Enterprise.create(enterprise).then(data => {
@@ -70,6 +74,9 @@ exports.getbyNotInEnterpriseSymbol = (req, res) => {
 exports.insertEnterprise = (req, res) => {
     const enterprise = {
         enterprise_symbol: req.body.enterprise_symbol,
+        operation_cash:req.body.operation_cash,
+        investing_cash:req.body.investing_cash,
+        financing_cash:req.body.financing_cash
     };
     console.log(enterprise)
     return Enterprise.create(enterprise)
@@ -106,9 +113,16 @@ exports.getbyEnterpriseSymbol = (req, res) => {
 exports.updatebySymbol = (req, res) => {
     const enterprise_symbol = req.body.enterprise_symbol;
     const update_data = {
+      enterprise_symbol: req.body.enterprise_symbol,
+      operation_cash:req.body.operation_cash,
+      investing_cash:req.body.investing_cash,
+      financing_cash:req.body.financing_cash
     }
+    console.log(update_data);
     Enterprise.update(update_data, {
-      where: { enterprise_symbol: enterprise_symbol }
+      where: { 
+        enterprise_symbol: enterprise_symbol 
+      }
     })
       .then(num => {
         if (num == 1) {
@@ -244,18 +258,44 @@ exports.addLongStock = (stock_symbol, enterprise_symbol, shares) => {
   });
 };
 //
-exports.getlongBySymbol = (enter_symbol) =>{
-  return Enterprise.findByPk(enter_symbol,{
-      include:[
-        {
-          model: Stock,
-          as: "long"
-        }
-      ]
+exports.havingMaxOpCashEnterperise= async(req, res) =>{
+  try{
+    let Ans;
+    console.log(req.params.enterprise_symbol);
+    Ans = await db.sequelize.query('SELECT MAX(operation_cash) FROM enterprises HAVING MAX(operation_cash)>400');
+    const data = {
+        "res":Ans
+    }
+    console.log(data);
+    return res.send(data);
+    }catch(err){
+        console.log(err);
+    }
+  }
+exports.getExistBond = async(req, res) =>{
+  try{
+    let Ans;
+    console.log(req.params.enterprise_symbol);
+    Ans = await db.sequelize.query('SELECT * FROM enterprises WHERE EXISTS (SELECT enterprise_symbol FROM bonds WHERE bonds.enterprise_symbol ='+req.params.enterprise_symbol+')');
+    const data = {
+        "res":Ans
+    }
+    console.log(data);
+    return res.send(data);
+    }catch(err){
+        console.log(err);
+    }
+}
+
+//
+exports.sumEnterpriseNetCash = (req, res) =>{
+  return Enterprise.findByPk(req.params.enterprise_symbol,{  
+    
   })
   .then(data =>{
-      console.log(data);
-      return data
+      //console.log(JSON.stringify(data, null, 2));
+      return res.send(data);
+      //return JSON.stringify(data, null, 2)
   })
   .catch(err => {
       console.log(err);
@@ -281,30 +321,14 @@ exports.addShortStock = (stock_symbol, enterprise_symbol, shares) => {
   });
 };
 //
-exports.getshortBySymbol = (enter_symbol) =>{
-  return Enterprise.findByPk(enter_symbol,{
-      include:[
-        {
-          model: Stock,
-          as: "short"
-        }
-      ]
-  })
-  .then(data =>{
-      console.log(data);
-      return data
-  })
-  .catch(err => {
-      console.log(err);
-  })
-}
-//
 exports.getpublicBySymbol = (enter_symbol) =>{
   return Enterprise.findByPk(enter_symbol,{
       include:[
         {
           model: Stock,
-          as: "public"
+          as: "public",
+          through: { attributes: ['share'] },
+          attributes:['close_price'],
         }
       ]
   })
@@ -316,3 +340,9 @@ exports.getpublicBySymbol = (enter_symbol) =>{
       console.log(err);
   })
 }
+
+/*attributes:[db.sequelize.literal('SUM("long"."stock_symbol")'), 'result'],
+    group:['enterprise.enterprise_symbol', 'long.stock_symbol', 'long->long_stock.enterprise_symbol', 'long->long_stock.stock_symbol']
+    //attributes:[db.sequelize.literal('SUM(long["close_price"]'), 'result'],
+    //attributes:[[db.sequelize.literal('SUM(long["close_price"] * long["long_stock"]["share"])'), 'result']]
+    //group:['enterprise.enterprise_symbol', 'long.stock_symbol', 'long->long_stock.share']*/

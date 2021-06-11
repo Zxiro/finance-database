@@ -35,13 +35,28 @@ const future_controller = require("./controllers/future_controller");
 const buildData = async () => {
   try{
     const enter1 = await enterprise_controller.create({
-      enterprise_symbol: 9999
+      enterprise_symbol: 9999,
+      operation_cash:100,
+      investing_cash:200,
+      financing_cash:300
+    });
+    const enter5 = await enterprise_controller.create({
+      enterprise_symbol: 9995,
+      operation_cash:900,
+      investing_cash:1000,
+      financing_cash:1100
     });
     const enter2 = await enterprise_controller.create({
-      enterprise_symbol: 9998
+      enterprise_symbol: 9998,
+      operation_cash:400,
+      investing_cash:500,
+      financing_cash:600
     });
     const enter3 = await enterprise_controller.create({
-      enterprise_symbol: 9997
+      enterprise_symbol: 9997,
+      operation_cash:700,
+      investing_cash:800,
+      financing_cash:900
     });
     const enter4 = await enterprise_controller.create({
       enterprise_symbol: 9996
@@ -49,22 +64,26 @@ const buildData = async () => {
     const stock1 = await stock_controller.create(enter1.enterprise_symbol, {
       stock_symbol: 2330,
       open_price: 600,
-      close_price:50
+      close_price:50,
+      volume:100000
     });
     const stock2 = await stock_controller.create(enter2.enterprise_symbol, {
       stock_symbol: 2454,
       open_price: 900,
-      close_price:90
+      close_price:90,
+      volume:150000
     });
     const stock3 = await stock_controller.create(enter3.enterprise_symbol, {
       stock_symbol: 2303,
       open_price: 50,
-      close_price:80
+      close_price:80,
+      volume:200000
     });
     const stock4 = await stock_controller.create(enter4.enterprise_symbol, {
       stock_symbol: 2037,
       open_price: 500,
-      close_price:650
+      close_price:650,
+      volume:300000
     });
     await enterprise_controller.addLongStock(stock1.stock_symbol, enter1.enterprise_symbol, 50);
     await enterprise_controller.addLongStock(stock2.stock_symbol, enter1.enterprise_symbol, 100);
@@ -117,7 +136,7 @@ const buildData = async () => {
       open_price: 320,
       close_price:340
     });
-    const test1 = await enterprise_controller.getlongBySymbol(enter1.enterprise_symbol)
+    /*const test1 = await enterprise_controller.getlongBySymbol(enter1.enterprise_symbol)
     console.log(
       "Enterprise with its long=",
       JSON.stringify(test1, null, 2)
@@ -126,7 +145,7 @@ const buildData = async () => {
     console.log(
       "Enterprise with its short=",
       JSON.stringify(test2, null, 2)
-    );
+    );*/
   }catch(err){
     console.log(err);
   }

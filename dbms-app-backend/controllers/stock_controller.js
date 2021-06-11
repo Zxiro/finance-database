@@ -1,5 +1,6 @@
 const { data } = require('jquery');
 const { type } = require('os');
+const { sequelize } = require('../models');
 const db = require('../models');
 const Stock = db.stock; // call stocks table in model
 const Enterprise = db.enterprise;
@@ -13,6 +14,7 @@ exports.create = (symbol, create_data) => {
         stock_symbol: create_data.stock_symbol,
         open_price: create_data.open_price,
         close_price: create_data.close_price,
+        volume: create_data.volume,
         enterprise_symbol: symbol
     };
     // Save stock in the postgreSQL database
@@ -187,7 +189,67 @@ exports.getMinbyStockSymbol = async(req, res) =>{
         console.log(err);
     }
 };
-
+//
+exports.NOTFINISHED_havingMaxOptionPriceStock= async (req, res) =>{
+try{
+    let Ans;
+    console.log(req.params.enterprise_symbol);
+    Ans = await db.sequelize.query('SELECT option_symbol, MAX() FROM enterprises GROUP BY enterprise_symbol HAVING SUM(operation_cash, investing_cash, financing_cash) > 40')
+    const data = {
+        "res":Ans
+    }
+    console.log(data);
+    return res.send(data);
+    }catch(err){
+        console.log(err);
+    }
+}
+//
+exports.havingMaxOptionPriceStock = (req, res) =>{
+    Option.findOne({
+        attributes:[[sequelize.fn('max', sequelize.col('option.open_price')), 'result']],
+        include :[{
+            model: Stock,
+        }],
+        group:['stock.stock_symbol'],
+        raw:true
+    }).then(data =>{
+        console.log(data);
+        return data
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+//
+exports.getNotExistOption= async (req, res) =>{
+    try{
+        let Ans;
+        console.log(req.params.stock_symbol);
+        Ans = await db.sequelize.query('SELECT * FROM stocks WHERE NOT EXISTS (SELECT option_symbol FROM options WHERE options.stock_symbol='+req.params.stock_symbol+')');
+        const data = {
+            "res":Ans
+        }
+        console.log(data);
+        return res.send(data);
+        }catch(err){
+            console.log(err);
+        }
+    }
+//
+exports.getSumStockVolume = async(req, res) =>{
+    try{
+        let ans
+        ans = await Stock.sum('volume')
+        console.log(ans);
+        const vol = {
+            "vol":ans
+        }
+        res.send(vol);
+    }catch(err){
+        console.log(err);
+    }
+};
 exports.getBySymbol = (enter_symbol) =>{
     return Stock.findByPk(enter_symbol,{
         include: Option

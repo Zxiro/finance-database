@@ -31,6 +31,15 @@ class findataservice{
     minstockprice(){
       return http.get("/stocks/min");
     }
+    sumstockvolume(){
+      return http.get("/stocks/sum");
+    }
+    havingmaxoptionpricestock(){
+      return http.get('/stocks/having');
+    }
+    notexiststockoption(stock_symbol){
+      return http.get(`/stocks/exist/${stock_symbol}`);
+    }
     rawstockdml(sql){
       return http.post("/stocks/raw/dml", sql);
     }
@@ -64,6 +73,12 @@ class findataservice{
     }
     countenterprise(){
       return http.post("/enterprises/count");
+    }
+    havingmaxopcashenterprise(){
+        return http.get('/enterprises/having');
+    }
+    existenterprisebond(enterprise_symbol){
+      return http.get(`/enterprises/exist/${enterprise_symbol}`);
     }
     rawenterprisedml(sql){
       return http.post("/enterprises/raw/dml", sql);
