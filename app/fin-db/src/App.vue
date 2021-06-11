@@ -36,7 +36,8 @@ export default {
   -webkit-background-clip: padding-box;
   -moz-osx-font-smoothing: grayscale;;
   color: #2c3e50;
-  height: 100vh;
+  background: whitesmoke;
+  height: 100%;
 }
 .container-fluid {
   height: 100%;

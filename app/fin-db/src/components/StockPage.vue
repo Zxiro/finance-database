@@ -2,7 +2,7 @@
     <div class="submit-form">
       <div v-if="!action_done">
         <div class="container-fluid p-0">
-          <nav class="navbar navbar-dark navbar-expand bg-dark">
+          <nav class="navbar navbar-dark navbar-expand bg-primary mb-3">
             <span class="navbar-brand mb-0 h1">Insert & Update Stock</span>
           </nav>
             <div id = "insert" class="row justify-content-center">
@@ -36,7 +36,7 @@
             </button>
           </div>
           </div>
-          <nav class="navbar navbar-dark navbar-expand bg-dark">
+          <nav class="navbar navbar-dark navbar-expand bg-primary mb-3">
                 <span class="navbar-brand mb-0 h1">Delete Stock</span>
           </nav>
             <div id = "delete" class="row justify-content-center">  
@@ -68,7 +68,7 @@
             </button>
           </div>
           </div>
-          <nav class="navbar navbar-dark navbar-expand bg-dark">
+          <nav class="navbar navbar-dark navbar-expand bg-primary mb-1">
               <span class="navbar-brand mb-0 h1">Stock Data</span>
           </nav>
           <div class = "form-group col text-center mt-4">

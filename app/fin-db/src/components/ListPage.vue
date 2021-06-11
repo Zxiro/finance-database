@@ -17,16 +17,16 @@
         <input type="text" class="form-control" placeholder="Search by symbol"
           v-model="primaryKey"/>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
+          <button class="btn btn-success row-sm-4" type="button"
             @click="onclickPKsearch()">
             Search
           </button>
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label">Search Multiple</label>
+        <label class="col-sm-4 col-form-label mb-2 mt-2">Search Multiple</label>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
+          <button class="btn btn-success row-sm-4 mb-2 mt-2" type="button"
             @click="onclickInsearch()">
             Search
           </button>
@@ -61,9 +61,9 @@
             />
           </div>
       </div>
-       <label class="col-sm-4 col-form-label">Search Multiple Not IN</label>
+       <label class="col-sm-4 col-form-label mb-2 mt-2">Search Multiple Not IN</label>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
+          <button class="btn btn-success row-sm-4 mb-2 mt-2" type="button"
             @click="onclickNotInsearch()">
             Search
           </button>
@@ -103,7 +103,7 @@
         <input type="text" class="form-control" placeholder="Search by raw SQL"
           v-model="sql"/>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
+          <button class="btn btn-success row-sm-4" type="button"
             @click="raw_retrieveStocks()">
             Search
           </button>
@@ -229,17 +229,50 @@ export default {
     },
     onclickPKsearch(){
       var value = this.type;
+      var symbol = this.primaryKey;
       if(value == 'stock'){
-        this.retrieveStocks();
+        findataservice.getstockbysymbol(symbol)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+          this.primaryKey = "";
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'bond'){
-        this.retrieveBonds();
+        findataservice.getbondbysymbol(symbol)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+          this.primaryKey = "";
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'option'){
-        this.retrieveOptions();
+         findataservice.getoptionbysymbol(symbol)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+          this.primaryKey = "";
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'enterprise'){
-        this.retrieveEnterprise();
+        findataservice.getenterprisebysymbol(symbol)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+          this.primaryKey = "";
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }/*
       if(value == 'future'){
         this.retrieveAllFutureData();
@@ -248,16 +281,44 @@ export default {
     onclickInsearch(){
       var value = this.type;
       if(value == 'stock'){
-        this.retrieveInStocks();
+        findataservice.getstockbyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'bond'){
-        this.retrieveInBonds();
+        findataservice.getbondbyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'option'){
-        this.retrieveInOptions();
+        findataservice.getoptionbyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'enterprise'){
-        this.retrieveInEnterprises();
+        findataservice.getenterprisebyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }/*
       if(value == 'future'){
         this.retrieveAllFutureData();
@@ -266,155 +327,74 @@ export default {
     onclickNotInsearch(){
       var value = this.type;
       if(value == 'stock'){
-        this.retrieveNotInStocks();
+        findataservice.getstockbyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'bond'){
-        this.retrieveNotInBonds();
+        findataservice.getbondbyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'option'){
-        this.retrieveNotInOptions();
+        findataservice.getoptionbyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       if(value == 'enterprise'){
-        this.retrieveNotInEnterprises();
+        findataservice.getenterprisebyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }/*
       
       if(value == 'future'){
         this.retrieveAllFutureData();
       }*/
     },
-    retrieveStocks() {
-      var stock_symbol = this.primaryKey;
-      findataservice.getstockbysymbol(stock_symbol)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveEnterprise() {
-      var enterprise_symbol = this.primaryKey;
-      findataservice.getenterprisebysymbol(enterprise_symbol)
-        .then(response => {
-          this.entities = response.data[0];
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveBonds() {
-      var bond_symbol = this.primaryKey;
-      findataservice.getbondbysymbol(bond_symbol)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveOptions() {
-      var option_symbol = this.primaryKey;
-      findataservice.getoptionbysymbol(option_symbol)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveInStocks() {
-      findataservice.getstockbyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveNotInStocks() {
-      findataservice.getstockbyNotInsymbol(this.not_in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveInBonds() {
-      findataservice.getbondbyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveNotInBonds() {
-      findataservice.getbondbyNotInsymbol(this.not_in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveInOptions() {
-      findataservice.getoptionbyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveNotInOptions() {
-      findataservice.getoptionbyNotInsymbol(this.not_in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveInEnterprises() {
-      findataservice.getenterprisebyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrieveNotInEnterprises() {
-      findataservice.getenterprisebyNotInsymbol(this.not_in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    
+  //SELECT * FROM stocks WHERE stock_symbol IN (2330, 2303, 2454)
+  //SELECT * FROM stocks WHERE stock_symbol NOT IN (2330, 2303, 2454)
+  //SELECT * FROM stocks WHERE stock_symbol = 2303
+
     raw_retrieveStocks() {
       var sql = {
         "sql":this.sql
       };
       findataservice.raw_getbysymbol(sql)
         .then(response => {
-          this.entities = response.data["res"][0][0];
+          this.entities = [];
+          var tmp = response.data["res"][0];
+          console.log(typeof tmp);
+          console.log(Object.keys(tmp).length)
+          console.log(tmp)
+          var iter
+          //console.log(response.data);
+          //console.log(Object.keys(tmp).length)
+          for(iter = 0; iter< Object.keys(tmp).length; iter++){
+            this.entities[iter] = tmp[iter];
+          }
+          //this.entities=response.data
           console.log(this.entities);
+          this.sql = ""
         })
         .catch(e => {
           console.log(e);

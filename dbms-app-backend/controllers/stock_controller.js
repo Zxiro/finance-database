@@ -14,6 +14,8 @@ exports.create = (symbol, create_data) => {
         stock_symbol: create_data.stock_symbol,
         open_price: create_data.open_price,
         close_price: create_data.close_price,
+        high_price: create_data.high_price,
+        low_price: create_data.low_price,
         volume: create_data.volume,
         enterprise_symbol: symbol
     };
@@ -250,20 +252,7 @@ exports.getSumStockVolume = async(req, res) =>{
         console.log(err);
     }
 };
-exports.getBySymbol = (enter_symbol) =>{
-    return Stock.findByPk(enter_symbol,{
-        include: Option
-    })
-    .then(data =>{
-        console.log(data);
-        return data
-    })
-    .catch(err => {
-        console.log(err);
-    })
-}
-
-
+//
 exports.countAllStock = async(req, res) => {
     try{
         let amount
@@ -283,7 +272,6 @@ exports.countAllStock = async(req, res) => {
         console.log(err);
     }
 }
-
 //Using raw SQL
 exports.raw_getStockSymbol = async (req, res) => { 
     try{
@@ -293,8 +281,8 @@ exports.raw_getStockSymbol = async (req, res) => {
         const data = {
             "res":StockSymbol
         }
-        console.log(data);
-        return res.send(data);
+        console.log(JSON.stringify(data, null, 2));
+        return res.send(JSON.stringify(data, null, 2));
     }catch(err){
         console.log(err);
     }

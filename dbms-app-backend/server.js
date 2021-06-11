@@ -40,12 +40,6 @@ const buildData = async () => {
       investing_cash:200,
       financing_cash:300
     });
-    const enter5 = await enterprise_controller.create({
-      enterprise_symbol: 9995,
-      operation_cash:900,
-      investing_cash:1000,
-      financing_cash:1100
-    });
     const enter2 = await enterprise_controller.create({
       enterprise_symbol: 9998,
       operation_cash:400,
@@ -61,29 +55,106 @@ const buildData = async () => {
     const enter4 = await enterprise_controller.create({
       enterprise_symbol: 9996
     });
+    const enter5 = await enterprise_controller.create({
+      enterprise_symbol: 9995
+    });
+    const enter6 = await enterprise_controller.create({
+      enterprise_symbol: 9994
+    });
+    const enter7 = await enterprise_controller.create({
+      enterprise_symbol: 9993
+    });
+    const enter8 = await enterprise_controller.create({
+      enterprise_symbol: 9992
+    });
+    const enter9 = await enterprise_controller.create({
+      enterprise_symbol: 9991
+    });
+    const enter10 = await enterprise_controller.create({
+      enterprise_symbol: 9990
+    });
+
+
+
     const stock1 = await stock_controller.create(enter1.enterprise_symbol, {
       stock_symbol: 2330,
       open_price: 600,
-      close_price:50,
-      volume:100000
+      close_price:610,
+      high_price:615,
+      low_price:605,
+      volume:30000
     });
     const stock2 = await stock_controller.create(enter2.enterprise_symbol, {
       stock_symbol: 2454,
-      open_price: 900,
-      close_price:90,
-      volume:150000
+      open_price: 1005,
+      close_price:980,
+      high_price:1010,
+      low_price:1000,
+      volume:10000
     });
     const stock3 = await stock_controller.create(enter3.enterprise_symbol, {
       stock_symbol: 2303,
       open_price: 50,
-      close_price:80,
-      volume:200000
+      close_price:55,
+      high_price:57,
+      low_price:48,
+      volume:100000
     });
     const stock4 = await stock_controller.create(enter4.enterprise_symbol, {
-      stock_symbol: 2037,
+      stock_symbol: 3037,
+      open_price: 125,
+      close_price:130,
+      high_price:135,
+      low_price:120,
+      volume:40000
+    });
+    const stock5 = await stock_controller.create(enter5.enterprise_symbol, {
+      stock_symbol: 2303,
+      open_price: 50,
+      close_price:55,
+      high_price:57,
+      low_price:48,
+      volume:100000
+    });
+    const stock6 = await stock_controller.create(enter6.enterprise_symbol, {
+      stock_symbol: 2890,
+      open_price: 14,
+      close_price:18,
+      high_price:20,
+      low_price:12,
+      volume:35000
+    });
+    const stock7 = await stock_controller.create(enter7.enterprise_symbol, {
+      stock_symbol: 2881,
+      open_price: 75,
+      close_price:77,
+      high_price:78,
+      low_price:70,
+      volume:20000
+    });
+    const stock8 = await stock_controller.create(enter8.enterprise_symbol, {
+      stock_symbol: 3034,
+      open_price: 519,
+      close_price:506,
+      high_price:523,
+      low_price:506,
+      volume:8000
+    });
+    const stock9 = await stock_controller.create(enter9.enterprise_symbol, {
+      stock_symbol: 2379,
       open_price: 500,
-      close_price:650,
-      volume:300000
+      close_price:550,
+      high_price:570,
+      low_price:480,
+      volume:10000
+    });
+    const stock10 = await stock_controller.create(enter10.enterprise_symbol, {
+      stock_symbol: 2603,
+      open_price: 115,
+      close_price:124,
+      high_price:124,
+      low_price:114,
+      volume:600000
     });
     await enterprise_controller.addLongStock(stock1.stock_symbol, enter1.enterprise_symbol, 50);
     await enterprise_controller.addLongStock(stock2.stock_symbol, enter1.enterprise_symbol, 100);
