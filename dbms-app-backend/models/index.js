@@ -79,8 +79,6 @@ db.bond.belongsTo(db.enterprise, {
 
 
 
-
-
 // Bonds has enterprise_symbol as FK (1 to many)
 db.stock.hasMany(db.option, {
   foreignKey: 'stock_symbol'

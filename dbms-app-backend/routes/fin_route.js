@@ -3,6 +3,7 @@ module.exports = app => { // set the corresponding method when getting different
     const bonds = require("../controllers/bond_controller.js");
     const enterprises = require("../controllers/enterprise_controller.js");
     const options = require("../controllers/option_controller.js");
+    const futures = require("../controllers/future_controller.js");
     var router = require("express").Router(); // init router var to determine the route
    
     // Retrive data by symbol
@@ -49,10 +50,11 @@ module.exports = app => { // set the corresponding method when getting different
     router.post("/bonds/update", bonds.updatebySymbol);
     router.post("/bonds/delete", bonds.deletebySymbol);
     router.post("/bonds/count", bonds.countAllBond);
-    //router.post("/bonds/raw", bonds.raw_getBondSymbol);
+    router.post("/bonds/raw/ddl", bonds.rawBondDdl);
+    router.post("/bonds/raw/dml", bonds.rawBondDml);
 
     router.get("/options", options.getAll);
-    router.get("/option/symbol/:option_symbol", options.getbyOptionSymbol);
+    router.get("/options/symbol/:option_symbol", options.getbyOptionSymbol);
     router.get("/options/max", options.getMaxbyOptionSymbol);
     router.get("/options/min", options.getMinbyOptionSymbol);
     router.get("/options/avg", options.getAvgbyOptionSymbol);
@@ -62,7 +64,23 @@ module.exports = app => { // set the corresponding method when getting different
     router.post("/options/update", options.updatebySymbol);
     router.post("/options/delete", options.deletebySymbol);
     router.post("/options/count", options.countAllOption);
-    //router.post("/options/raw", options.raw_getOptionSymbol);
+    router.post("/options/raw/ddl", options.rawOptionDdl);
+    router.post("/options/raw/dml", options.rawOptionDml);
+    
+
+    router.get("/futures", futures.getAll);
+    router.get("/futures/symbol/:future_symbol", futures.getbyFutureSymbol);
+    router.get("/futures/max", futures.getMaxbyFutureSymbol);
+    router.get("/futures/min", futures.getMinbyFutureSymbol);
+    router.get("/futures/avg", futures.getAvgbyFutureSymbol);
+    router.post("/futures/in", futures.getbyInFutureSymbol);
+    router.post("/futures/not_in", futures.getbyNotInFutureSymbol);
+    router.post("/futures/insert", futures.insertFuture);
+    router.post("/futures/update", futures.updatebySymbol);
+    router.post("/futures/delete", futures.deletebySymbol);
+    router.post("/futures/count", futures.countAllFuture);
+    router.post("/futures/raw/ddl", futures.rawFutureDdl);
+    router.post("/futures/raw/dml", futures.rawFutureDml);
 
 
     app.use('/', router);

@@ -2,7 +2,7 @@
     <div class="submit-form">
       <div v-if="!action_done">
         <div id = 'enter' class="container-fluid p-0">
-          <nav class="navbar navbar-dark navbar-expand bg-dark ">
+          <nav class="navbar navbar-dark navbar-expand bg-primary ">
             <span class="navbar-brand mb-0 h1">Insert & Update Enterprise</span>
           </nav>
             <div id = "insert" class="row justify-content-center">
@@ -30,17 +30,7 @@
               Update
             </button>
           </div>
-          <div class="input-group mb-3 justify-content-center">
-          <input type="text" class="form-control col-sm-8" placeholder="Search by raw SQL"
-            v-model="dml_sql"/>
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button"
-              @click="rawEnterpriseDml()">
-              Search
-            </button>
-          </div>
-          </div>
-          <nav class="navbar navbar-dark navbar-expand bg-dark">
+          <nav class="navbar navbar-dark navbar-expand bg-primary">
                 <span class="navbar-brand mb-0 h1">Delete Enterprise</span>
           </nav>
             <div id = "delete" class="row justify-content-center mt-4">  
@@ -61,7 +51,7 @@
                   Delete
                 </button>
                 <button @click="existEnterpriseBond" class="btn btn-success row-sm-4">EXIST bond</button>
-                <button @click="havingMaxOpCashEnterprise" class="btn btn-success row-sm-4">HAVING Max Op cash</button>
+                
             </div>
           <div class="input-group mb-3 justify-content-center">
           <input type="text" class="form-control col-sm-8" placeholder="Search by raw SQL"
@@ -74,13 +64,14 @@
           </div>
           </div>
           <div>
-          <label><strong>Ans:</strong></label>{{delete_exist_ans}}
+          <label><strong>Ans:</strong></label>{{dml_ans}}
         </div>
-          <nav class="navbar navbar-dark navbar-expand bg-dark">
+          <nav class="navbar navbar-dark navbar-expand bg-primary">
               <span class="navbar-brand mb-0 h1">Enterprise Data</span>
           </nav>
           <div class = "form-group col text-center mt-4">
             <button @click="countEnterprise" class="btn btn-success row-sm-4">COUNT</button>
+            <button @click="havingMaxOpCashEnterprise" class="btn btn-success row-sm-4">HAVING Max Op cash</button>
           </div>
           <div class="input-group mb-3 justify-content-center">
           <input type="text" class="form-control " placeholder="Search by raw SQL"
@@ -140,7 +131,7 @@ export default {
         dml_sql:"",
         ddl_sql:"",
         ddl_ans:"",
-        delete_exist_ans:"",
+        dml_ans:"",
         action_done: false
       };// The data set that is going to pass to the server
     },
@@ -165,7 +156,6 @@ export default {
         };
         this.dml_sql="",
         this.ddl_sql="",
-        this.delete_exist_ans="",
         this.getalldata();
       },
       insertEnterprise(){
@@ -221,25 +211,7 @@ export default {
       countEnterprise(){
         findataservice.countenterprise() 
         .then( response => {
-          this.ddl_ans = response.data;
-          console.log(response.data);
-          response.end;
-          this.action_done = true;
-        }
-        )
-        .catch(e => {
-              console.log(e);
-          });
-      },
-      sumEnterpriseNetCash(){
-        var enterprise_symbol = this.enterprise_data.enterprise_symbol
-        findataservice.sumenterprisenetcash(enterprise_symbol) 
-        .then( response => {
-
-          console.log(response);
-          this.action_done = true;
-          this.ddl_ans = response.data;
-          console.log(response.data);
+          this.ddl_ans = 'SQL Ans: '+response.data['count'];
           response.end;
           this.action_done = true;
         }
@@ -251,13 +223,20 @@ export default {
       havingMaxOpCashEnterprise(){
         findataservice.havingmaxopcashenterprise() 
         .then( response => {
-
-          console.log(response);
+          for (var key in response.data["res"][0][0]){
+            console.log(key)
+            this.ddl_ans = 'SQL Ans: '+ response.data["res"][0][0][key]
+            break
+          }
+          //this.ddl_ans = 'SQL Ans: '+response.data['max'];
+          response.end;
+          this.action_done = true;
+          /*
           this.action_done = true;
           this.ddl_ans = response.data;
           console.log(response.data);
           response.end;
-          this.action_done = true;
+          this.action_done = true;*/
         }
         )
         .catch(e => {
@@ -268,14 +247,14 @@ export default {
         var enterprise_symbol = this.enterprise_data.enterprise_symbol
         findataservice.existenterprisebond(enterprise_symbol) 
         .then( response => {
-          console.log(response.data);
-          if(response.data.enterprise_symbol != null){
-            this.delete_exist_ans = 'Yes'
+          var tmp = response.data['res'][0]
+          if(Object.keys(tmp).length == 1){ //Does not exist
+            this.dml_ans = 'enterprise: '+enterprise_symbol+' does publish bond'
             response.end;
             this.action_done = true;
           }
           else{
-            this.delete_exist_ans = 'No'
+            this.dml_ans = 'enterprise: '+enterprise_symbol+' does not publish bond'
             response.end;
             this.action_done = true;
           }
@@ -285,6 +264,7 @@ export default {
               console.log(e);
           });
       },
+    // INSERT INTO enterprises(enterprise_symbol, operation_cash, investing_cash, financing_cash) VALUES(22222222, 99, 99, 99)
       rawEnterpriseDml(){
         var sql = {
           sql:this.dml_sql
@@ -300,13 +280,19 @@ export default {
           console.log(e);
         });
       },
+      //SELECT MAX(operation_cash) FROM enterprises HAVING MAX(operation_cash)>400
       rawEnterpriseDdl(){
         var sql = {
           sql:this.ddl_sql
         }
         findataservice.rawenterpriseddl(sql)
         .then(response => {
-          this.ddl_ans = response.data["res"][0][0];
+          console.log("?")
+          for (var key in response.data["res"][0][0]){
+            console.log(key)
+            this.ddl_ans = 'SQL Ans: '+ response.data["res"][0][0][key]
+            break
+          }
           console.log(response);
         })
         .catch(e => {

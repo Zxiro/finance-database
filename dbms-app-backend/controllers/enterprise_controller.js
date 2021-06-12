@@ -276,7 +276,7 @@ exports.getExistBond = async(req, res) =>{
   try{
     let Ans;
     console.log(req.params.enterprise_symbol);
-    Ans = await db.sequelize.query('SELECT * FROM enterprises WHERE EXISTS (SELECT enterprise_symbol FROM bonds WHERE bonds.enterprise_symbol ='+req.params.enterprise_symbol+')');
+    Ans = await db.sequelize.query('SELECT enterprise_symbol FROM enterprises WHERE EXISTS (SELECT enterprise_symbol FROM bonds WHERE bonds.enterprise_symbol ='+req.params.enterprise_symbol+')AND enterprises.enterprise_symbol = '+req.params.enterprise_symbol);
     const data = {
         "res":Ans
     }

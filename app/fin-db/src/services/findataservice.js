@@ -123,6 +123,12 @@ class findataservice{
     avgbondprice(){
       return http.get("/bonds/avg")
     }
+    rawbonddml(sql){
+      return http.post("/bonds/raw/dml", sql);
+    }
+    rawbondddl(sql){
+      return http.post("/bonds/raw/ddl", sql);
+    }
 
     getallOption(){
       return http.get("/options");
@@ -157,13 +163,52 @@ class findataservice{
     avgoptionprice(){
       return http.get("/options/avg")
     }
-    /*
-    getallOption(){
-      return http.get("/");
+    rawoptiondml(sql){
+      return http.post("/options/raw/dml", sql);
     }
+    rawoptionddl(sql){
+      return http.post("/options/raw/ddl", sql);
+    }
+
     getallFuture(){
-      return http.get("/");
-    } */ 
+      return http.get("/futures");
+    }
+    getfuturebysymbol(future_symbol){
+      return http.get(`/futures/symbol/${future_symbol}`);
+    }
+    getfuturebyInsymbol(data){
+      return http.post("/futures/in", data);
+    }
+    getfuturebyNotInsymbol(data){
+      return http.post("/futures/not_in", data);
+    }
+    insertfuture(data){
+      return http.post("/futures/insert", data);
+    }  
+    updatefuture(data){
+      return http.post("/futures/update", data);
+    }
+    deletefuture(data){
+      return http.post("/futures/delete", data);
+    }
+    countfuture(data){
+      return http.post("/futures/count", data);
+    }
+    maxfutureprice(){
+      return http.get("/futures/max");
+    }
+    minfutureprice(){
+      return http.get("/futures/min");
+    }
+    avgfutureprice(){
+      return http.get("/futures/avg")
+    }
+    rawfuturedml(sql){
+      return http.post("/futures/raw/dml", sql);
+    }
+    rawfutureddl(sql){
+      return http.post("/futures/raw/ddl", sql);
+    }
     
 }
 export default new findataservice();

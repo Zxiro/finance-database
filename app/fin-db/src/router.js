@@ -6,12 +6,6 @@ const routes = [
         alias: "/home", // optional name when we link to this route
         name:"home",
         component: () => import("./components/ListPage"),
-        /*children:[
-            {
-                /*path:'stocks',
-                component: () => import("./components/StockPage.vue")
-            }
-        ]*/
     },
     {
         path: "/stocks", //the URL path
@@ -27,6 +21,16 @@ const routes = [
         path: "/bonds", //the URL path
         name:"bond",
         component: () => import("./components/BondPage")
+    },
+    {
+        path: "/options", //the URL path
+        name:"option",
+        component: () => import("./components/OptionPage.vue")
+    },
+    {
+        path: "/futures", //the URL path
+        name:"future",
+        component: () => import("./components/FuturePage.vue")
     },
 ];
 

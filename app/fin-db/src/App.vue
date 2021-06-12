@@ -15,6 +15,9 @@
         <li class="nav-item">
           <router-link to="/options" class="nav-link">options</router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/futures" class="nav-link">futures</router-link>
+        </li>
       </div>
     </nav>
     <div class="container-fluid p-0">

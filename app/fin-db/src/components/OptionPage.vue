@@ -1,54 +1,107 @@
 <template>
     <div class="submit-form">
       <div v-if="!action_done">
-          <div class="form-group row">
-            <label for="option-symbol" class="col-sm-4 col-form-label">Option Symbol</label>
-              <div class="col-sm-8">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="option-symbol"
-                  required
-                  v-model="option_data.option_symbol"
-                  name="option-symbol"
-                />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="open-price" class="col-sm-4 col-form-label">Open Price</label>
-              <div class="col-sm-8">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="open-price"
-                  required
-                  v-model="option_data.open_price"
-                  name="open-price"
-                />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="option-symbol" class="col-sm-4 col-form-label">Close Price</label>
-              <div class="col-sm-8">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="close-price"
-                  required
-                  v-model="option_data.close_price"
-                  name="close-price"
-                />
+        <div class="container-fluid p-0">
+          <nav class="navbar navbar-dark navbar-expand bg-primary mb-3">
+            <span class="navbar-brand mb-0 h1">Update</span>
+          </nav>
+            <div id = "insert" class="row justify-content-center">
+              <div v-for="(feature, index) in option_data"
+                :key = "index" class = "col col-lg">  
+                <label class="col col-md-12">{{index}}</label>
+                  <div class="col col-lg-12">
+                    <input
+                      type="text"
+                      class="form-control"
+                      required
+                      v-model="option_data[index]"
+                      name="insert-option-symbol"
+                    />
+                </div>
             </div>
           </div>
           <div class = "form-group col text-center mt-4">
-            <button @click="insertOption" class="btn btn-success row-sm-4">Insert</button>
-            <button @click="updateOption" class="btn btn-success row-sm-4">Edit</button>
-            <button @click="deleteOption" class="btn btn-success row-sm-4">Delete</button>
+            <button id = "update" class="btn btn-success row-sm-4" type="button"
+              @click="updateOption">
+              Update
+            </button>
+          </div>
+          <nav class="navbar navbar-dark navbar-expand bg-primary mb-3">
+                <span class="navbar-brand mb-0 h1">Delete </span>
+          </nav>
+            <div id = "delete" class="row justify-content-center">  
+                <label class="col col-lg-2">option_symbol</label>
+                  <div class="col col-lg-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      required
+                      v-model="option_data.option_symbol"
+                      name="delete-option-symbol"
+                    />
+                  </div>
+            </div>
+            <div class = "form-group col text-center mt-4">
+                <button class="btn btn-success row-sm-4" type="button"
+                  @click="deleteOption">
+                  Delete
+                </button>
+            </div>
+          <div class="input-group mb-3 justify-content-center">
+          <input type="text" class="form-control col-sm-8" placeholder="Execute by raw SQL"
+            v-model="dml_sql"/>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button"
+              @click="rawOptionDml()">
+              Execute
+            </button>
+          </div>
+          </div>
+          <div>
+          <label><strong>Ans:</strong></label>{{dml_ans}}
+        </div>
+          <nav class="navbar navbar-dark navbar-expand bg-primary mb-1">
+              <span class="navbar-brand mb-0 h1">Option Data</span>
+          </nav>
+          <div class = "form-group col text-center mt-4">
             <button @click="countOption" class="btn btn-success row-sm-4">COUNT</button>
+            <button @click="avgOptionPrice" class="btn btn-success row-sm-4">AVG</button>
             <button @click="maxOptionPrice" class="btn btn-success row-sm-4">MAX</button>
             <button @click="minOptionPrice" class="btn btn-success row-sm-4">MIN</button>
-            <button @click="avgOptionPrice" class="btn btn-success row-sm-4">AVG</button> 
           </div>
+          <div class="input-group mb-3 justify-content-center">
+          <input type="text" class="form-control col-sm-8" placeholder="Search by raw SQL"
+            v-model="ddl_sql"/>
+          <div class="input-group-append ">
+            <button class="btn btn-outline-secondary" type="button"
+              @click="rawOptionDdl()">
+              Search
+            </button>
+          </div>
+          </div>
+        <div>
+          <label><strong>Ans:</strong></label>{{ddl_ans}}
+        </div>
+        </div>
+        <div>
+          <table class="table table table-dark table-hover">
+            <thead>
+              <tr>
+                <th
+                  v-for="(feature, index) in entities[0]"
+                  :key = "index"
+                >{{index}}</th></tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(product, index) in entities"
+                :key = "index"
+              ><td v-for="(attr, index_) in product"
+                :key = "index_">{{attr}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div v-else>
         <h4>Operation finished!</h4>
@@ -64,42 +117,57 @@ export default {
     name: "add-option",
     data(){
       return{
+        entities:[],
         option_data:{
-        id: null,
         option_symbol: "",
         open_price: "",
         close_price: "",
+        high_price: "",
+        low_price: "",
+        volume:"",
+        stock_symbol: ""
         },
+        dml_sql:"",
+        ddl_sql:"",
+        dml_ans:"",
+        ddl_ans:"",
         action_done: false
       };// The data set that is going to pass to the server
     },
     methods: {
+      getalldata(){
+        findataservice.getallOption()
+            .then(response => {
+              this.entities = response.data;
+              console.log(response.data);
+            })
+            .catch(e => {
+              console.log(e);
+        });
+      },
       newOption(){
         this.action_done = false;
-        this.option_data = {};
-      },
-      insertOption(){
-        var data = {
-            option_symbol: this.option_data.option_symbol,
-            open_price: this.option_data.open_price,
-            close_price: this.option_data.close_price
+        this.option_data = {
+        option_symbol: "",
+        open_price: "",
+        close_price: "",
+        high_price: "",
+        low_price: "",
+        volume:"",
+        enterprise_symbol: ""
         };
-        findataservice.insertoption(data) 
-        .then( response => {
-            console.log(response.data);
-            response.end;
-            this.action_done = true;
-        }
-        )
-        .catch(e => {
-              console.log(e);
-          });
+        this.dml_sql="",
+        this.ddl_sql="";
+        this.getalldata();
       },
       updateOption(){
         var data = {
             option_symbol: this.option_data.option_symbol,
             open_price: this.option_data.open_price,
-            close_price: this.option_data.close_price
+            close_price: this.option_data.close_price,
+            high_price: this.option_data.high_price,
+            low_price: this.option_data.low_price,
+            volume: this.option_data.volume
         };
         findataservice.updateoption(data) 
         .then( response => {
@@ -128,14 +196,11 @@ export default {
           });
       },
       countOption(){
-        var data = {
-            option_symbol: this.option_data.option_symbol,
-        };
-        findataservice.countoption(data) 
+        findataservice.countoption() 
         .then( response => {
-            console.log(response.data);
-            response.end;
-            this.action_done = true;
+          this.ddl_ans = 'SQL Ans: '+response.data['count'];
+          response.end;
+          this.action_done = true;
         }
         )
         .catch(e => {
@@ -143,14 +208,13 @@ export default {
           });
       },
       maxOptionPrice(){
-        /*var data = {
-            Option_symbol: this.Option_data.Option_symbol,
-        };*/
         findataservice.maxoptionprice() 
         .then( response => {
-            console.log(response.data);
-            response.end;
-            this.action_done = true;
+          this.ddl_ans = 'Max close price SQL Ans: '+response.data['max']
+          console.log(this.ddl_ans);
+          this.action_done = true;
+          response.end;
+         
         }
         )
         .catch(e => {
@@ -158,14 +222,12 @@ export default {
           });
       },
       minOptionPrice(){
-        /*var data = {
-            Option_symbol: this.Option_data.Option_symbol,
-        };*/
         findataservice.minoptionprice() 
         .then( response => {
-            console.log(response.data);
-            response.end;
-            this.action_done = true;
+          this.ddl_ans = 'Max close price SQL Ans: '+response.data['min']
+          console.log(response.data);
+          response.end;
+          this.action_done = true;
         }
         )
         .catch(e => {
@@ -173,20 +235,57 @@ export default {
           });
       },
       avgOptionPrice(){
-        /*var data = {
-            Option_symbol: this.Option_data.Option_symbol,
-        };*/
-        findataservice.avgoptionprice() 
+        findataservice.avgoptionprice()
         .then( response => {
-            console.log(response.data);
-            response.end;
-            this.action_done = true;
+          this.ddl_ans = 'Average close price SQL Ans: '+response.data[0]['avg']
+          console.log(response.data);
+          response.end;
+          this.action_done = true;
         }
         )
         .catch(e => {
               console.log(e);
           });
+      },
+      //
+      rawOptionDml(){
+        var sql = {
+          sql:this.dml_sql
+        }
+        findataservice.rawoptiondml(sql)
+        .then(response => {
+          if(response.data['res'][0].length != 0){
+            this.dml_ans = 'option: '+response.data['res'][0][0]['option_symbol']+' does not publish option'
+            response.end;
+            this.action_done = true;
+          }
+          response.end;
+          this.action_done = true;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      //SELECT AVG(open_price) FROM options
+      rawOptionDdl(){
+        var sql = {
+          sql:this.ddl_sql
+        }
+        findataservice.rawoptionddl(sql)
+        .then(response => {
+          for (var key in response.data["res"][0][0]){
+            console.log(key)
+            this.ddl_ans = 'SQL Ans: '+ response.data["res"][0][0][key]
+          }
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
+    },
+    mounted(){
+      this.getalldata()
     }
 };
 
@@ -194,12 +293,8 @@ export default {
 
 <style>
   .submit-form {
-    max-width:350px;
+    width:100%;
     margin: auto;
-  }
-  .form-control{
-    -webkit-background-clip: padding-box;
-    mt:5px;
   }
   .form-check-input {
     -webkit-print-color-adjust: exact;
@@ -213,8 +308,5 @@ export default {
   .btn-success{
     margin-left: 10px;
     mr:10px;
-  }
-  .col-sm-8{
-    mt:5px;
   }
 </style>

@@ -11,6 +11,9 @@ exports.create = (symbol, create_data) => {
         bond_symbol: create_data.bond_symbol,
         open_price: create_data.open_price,
         close_price: create_data.close_price,
+        high_price: create_data.high_price,
+        low_price: create_data.low_price,
+        volume: create_data.volume,
         enterprise_symbol: symbol
     };
     // Save bond in the postgreSQL database
@@ -41,6 +44,9 @@ exports.insertBond = (req, res) => {
         bond_symbol: req.body.bond_symbol,
         open_price: req.body.open_price,
         close_price: req.body.close_price,
+        high_price:req.body.high_price,
+        low_price: req.body.low_price,
+        volume: req.body.volume,
         enterprise_symbol: req.body.enterprise_symbol
     };
     console.log(bond)
@@ -79,8 +85,13 @@ exports.getbyBondSymbol = (req, res) => {
 exports.updatebySymbol = (req, res) => {
     const bond_symbol = req.body.bond_symbol;
     const update_data = {
+        bond_symbol: req.body.bond_symbol,
         open_price: req.body.open_price,
-        close_price: req.body.close_price
+        close_price: req.body.close_price,
+        high_price:req.body.high_price,
+        low_price: req.body.low_price,
+        volume: req.body.volume,
+        enterprise_symbol: req.body.enterprise_symbol
     }
     Bond.update(update_data, {
       where: { bond_symbol: bond_symbol }
@@ -127,31 +138,32 @@ exports.deletebySymbol = (req, res) => {
       });
 };
 // SELECT MAX(high_price) FROM bond WHERE bond_symbol = bond_symbol
-exports.getMaxbyBondSymbol = (res) =>{
-    Bond.max('open_price')
-    .then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving max open price"
-        })
-    })
+exports.getMaxbyBondSymbol = async (req, res) =>{
+    try{
+        let ans
+        ans = await Bond.max('close_price')
+        console.log(ans);
+        const max = {
+            "max":ans
+        }
+        res.send(max);
+    }catch(err){
+        console.log(err);
+    }
 };
 // SELECT MIN(high_price) FROM bond WHERE bond_symbol = bond_symbol
-exports.getMinbyBondSymbol = (req, res) =>{
-    Bond.min('close_price').then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving min open price"
-        })
-    })
+exports.getMinbyBondSymbol = async (req, res) =>{
+    try{
+        let ans
+        ans = await Bond.min('close_price')
+        console.log(ans);
+        const min = {
+            "min":ans
+        }
+        res.send(min);
+    }catch(err){
+        console.log(err);
+    }
 }
 //
 exports.getAvgbyBondSymbol = (req, res) =>{
@@ -217,6 +229,35 @@ exports.countAllBond = async(req, res) => {
             "count":amount
         }
         res.send(count);
+    }catch(err){
+        console.log(err);
+    }
+}
+//
+exports.rawBondDml = async (req, res) => { 
+    try{
+        console.log(req.body.sql);
+        let Ans
+        Ans = await db.sequelize.query(req.body.sql);
+        const data = {
+            "res":Ans
+        }
+        return res.send(data);
+    }catch(err){
+        console.log(err);
+    }
+}
+//Using raw SQL
+exports.rawBondDdl = async (req, res) => { 
+    try{
+        let Ans;
+        console.log(req.body.sql);
+        Ans = await db.sequelize.query(req.body.sql);
+        const data = {
+            "res":Ans
+        }
+        console.log(data);
+        return res.send(data);
     }catch(err){
         console.log(err);
     }

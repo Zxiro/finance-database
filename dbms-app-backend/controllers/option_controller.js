@@ -11,6 +11,9 @@ exports.create = (symbol, create_data) => {
         option_symbol: create_data.option_symbol,
         open_price: create_data.open_price,
         close_price: create_data.close_price,
+        high_price: create_data.high_price,
+        low_price: create_data.low_price,
+        volume: create_data.volume,
         stock_symbol: symbol
     };
     // Save option in the postgreSQL database
@@ -41,6 +44,10 @@ exports.insertOption = (req, res) => {
         option_symbol: req.body.option_symbol,
         open_price: req.body.open_price,
         close_price: req.body.close_price,
+        high_price:req.body.high_price,
+        low_price: req.body.low_price,
+        volume: req.body.volume,
+        stock_symbol: req.body.stock_symbol
     };
     console.log(option)
     return Option.create(option)
@@ -57,7 +64,7 @@ exports.insertOption = (req, res) => {
 };
 // SELECT * FROM options WHERE option_symbol =
 exports.getbyOptionSymbol = (req, res) => {
-    const optionSymbol = req.params.option_symbol;
+    const optionSymbol = req.params.option_symbol
     Option.findAll({
         where:{
             option_symbol:optionSymbol // SELECT * FROM option WHERE option_symbol = optionSymbol
@@ -77,8 +84,13 @@ exports.getbyOptionSymbol = (req, res) => {
 exports.updatebySymbol = (req, res) => {
     const option_symbol = req.body.option_symbol;
     const update_data = {
+        option_symbol: req.body.option_symbol,
         open_price: req.body.open_price,
-        close_price: req.body.close_price
+        close_price: req.body.close_price,
+        high_price:req.body.high_price,
+        low_price: req.body.low_price,
+        volume: req.body.volume,
+        enterprise_symbol: req.body.enterprise_symbol
     }
     Option.update(update_data, {
       where: { option_symbol: option_symbol }
@@ -125,31 +137,32 @@ exports.deletebySymbol = (req, res) => {
       });
 };
 // SELECT MAX(high_price) FROM option WHERE option_symbol = option_symbol
-exports.getMaxbyOptionSymbol = (res) =>{
-    Option.max('open_price')
-    .then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving max open price"
-        })
-    })
+exports.getMaxbyOptionSymbol = async (req, res) =>{
+    try{
+        let ans
+        ans = await Option.max('close_price')
+        console.log(ans);
+        const max = {
+            "max":ans
+        }
+        res.send(max);
+    }catch(err){
+        console.log(err);
+    }
 };
 // SELECT MIN(high_price) FROM option WHERE option_symbol = option_symbol
-exports.getMinbyOptionSymbol = (req, res) =>{
-    Option.min('close_price').then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving min open price"
-        })
-    })
+exports.getMinbyOptionSymbol = async (req, res) =>{
+    try{
+        let ans
+        ans = await Option.min('close_price')
+        console.log(ans);
+        const min = {
+            "min":ans
+        }
+        res.send(min);
+    }catch(err){
+        console.log(err);
+    }
 }
 //
 exports.getAvgbyOptionSymbol = (req, res) =>{
@@ -215,6 +228,35 @@ exports.countAllOption = async(req, res) => {
             "count":amount
         }
         res.send(count);
+    }catch(err){
+        console.log(err);
+    }
+}
+//
+exports.rawOptionDml = async (req, res) => { 
+    try{
+        console.log(req.body.sql);
+        let Ans
+        Ans = await db.sequelize.query(req.body.sql);
+        const data = {
+            "res":Ans
+        }
+        return res.send(data);
+    }catch(err){
+        console.log(err);
+    }
+}
+//Using raw SQL
+exports.rawOptionDdl = async (req, res) => { 
+    try{
+        let Ans;
+        console.log(req.body.sql);
+        Ans = await db.sequelize.query(req.body.sql);
+        const data = {
+            "res":Ans
+        }
+        console.log(data);
+        return res.send(data);
     }catch(err){
         console.log(err);
     }

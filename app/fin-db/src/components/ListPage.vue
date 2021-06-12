@@ -216,9 +216,7 @@ export default {
         });
     },
     retrieveAllFutureData() {
-      var type = this.type;
-      console.log(type);
-      findataservice.getall(type)
+      findataservice.getallFuture()
         .then(response => {
           this.entities = response.data;
           console.log(response.data);
@@ -273,10 +271,18 @@ export default {
         .catch(e => {
           console.log(e);
         });
-      }/*
+      }
       if(value == 'future'){
-        this.retrieveAllFutureData();
-      }*/
+        findataservice.getfuturebysymbol(symbol)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+          this.primaryKey = "";
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      }
     },
     onclickInsearch(){
       var value = this.type;
@@ -312,6 +318,16 @@ export default {
       }
       if(value == 'enterprise'){
         findataservice.getenterprisebyInsymbol(this.in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      }
+      if(value == 'future'){
+        findataservice.getfuturebyInsymbol(this.in_condtion)
         .then(response => {
           this.entities = response.data;
           console.log(this.entities);
@@ -358,6 +374,16 @@ export default {
       }
       if(value == 'enterprise'){
         findataservice.getenterprisebyNotInsymbol(this.not_in_condtion)
+        .then(response => {
+          this.entities = response.data;
+          console.log(this.entities);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      }
+      if(value == 'future'){
+        findataservice.getfuturebyInsymbol(this.in_condtion)
         .then(response => {
           this.entities = response.data;
           console.log(this.entities);

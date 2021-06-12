@@ -239,7 +239,7 @@ exports.getNotExistOption= async (req, res) =>{
         }catch(err){
             console.log(err);
         }
-    }
+}
 //
 exports.getSumStockVolume = async(req, res) =>{
     try{
