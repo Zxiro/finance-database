@@ -117,7 +117,10 @@ exports.updatebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;
     const update_data = {
         open_price: req.body.open_price,
-        close_price: req.body.close_price
+        close_price: req.body.close_price,
+        high_price: req.body.high_price,
+        low_price: req.body.low_price,
+        volume: req.body.volume
     }
     Stock.update(update_data, {
       where: { stock_symbol: stock_symbol }
@@ -125,24 +128,23 @@ exports.updatebySymbol = (req, res) => {
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Tutorial was updated successfully."
+            message: "Stock was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Tutorial with id=${stock_symbol}. Maybe Tutorial was not found or req.body is empty!`
+            message: `Cannot update Stock with id=${stock_symbol}. Maybe Stock was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Tutorial with id=" + stock_symbol
+          message: "Error updating Stock with id=" + stock_symbol
         });
       });
 };
 // DELETE
 exports.deletebySymbol = (req, res) => {
     const stock_symbol = req.body.stock_symbol;
-  
     Stock.destroy({
       where: { stock_symbol: stock_symbol }
     })
@@ -217,7 +219,7 @@ exports.havingMaxOptionPriceStock = (req, res) =>{
         raw:true
     }).then(data =>{
         console.log(data);
-        return data
+        return res.send(data)
     })
     .catch(err => {
         console.log(err);
@@ -228,7 +230,7 @@ exports.getNotExistOption= async (req, res) =>{
     try{
         let Ans;
         console.log(req.params.stock_symbol);
-        Ans = await db.sequelize.query('SELECT * FROM stocks WHERE NOT EXISTS (SELECT option_symbol FROM options WHERE options.stock_symbol='+req.params.stock_symbol+')');
+        Ans = await db.sequelize.query('SELECT stock_symbol FROM stocks WHERE NOT EXISTS (SELECT * FROM options WHERE options.stock_symbol='+req.params.stock_symbol+') AND stocks.stock_symbol = '+req.params.stock_symbol);
         const data = {
             "res":Ans
         }
@@ -292,8 +294,12 @@ exports.raw_getStockSymbol = async (req, res) => {
 exports.rawStockDml = async (req, res) => { 
     try{
         console.log(req.body.sql);
-        await db.sequelize.query(req.body.sql);
-        return res.send();
+        let Ans
+        Ans = await db.sequelize.query(req.body.sql);
+        const data = {
+            "res":Ans
+        }
+        return res.send(data);
     }catch(err){
         console.log(err);
     }
