@@ -112,7 +112,6 @@
        </div>
     </div>
   </div>
-      <!-- router-link :to="stocks/" class="badge badge-warning">Edit</router-link-->
     <div>
       <table class="table table table-dark table-hover">
         <thead>
@@ -400,7 +399,6 @@ export default {
   //SELECT * FROM stocks WHERE stock_symbol IN (2330, 2303, 2454)
   //SELECT * FROM stocks WHERE stock_symbol NOT IN (2330, 2303, 2454)
   //SELECT * FROM stocks WHERE stock_symbol = 2303
-
     raw_retrieveStocks() {
       var sql = {
         "sql":this.sql

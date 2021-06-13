@@ -12,6 +12,10 @@
     "bootstrap-vue": "^2.17.3",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
+    "gem": "^2.4.3",
+    "ruby": "^0.6.1",
+    "travis": "^0.1.1",
+    "travis-ci": "^2.2.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.8",
     "vue3-table-lite": "^1.0.5"
