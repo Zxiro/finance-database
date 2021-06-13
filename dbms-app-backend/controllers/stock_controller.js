@@ -3,7 +3,6 @@ const { type } = require('os');
 const { sequelize } = require('../models');
 const db = require('../models');
 const Stock = db.stock; // call stocks table in model
-const Enterprise = db.enterprise;
 const Option = db.option;
 const Op = db.Sequelize.Op;
 
@@ -42,36 +41,33 @@ exports.getAll = (req, res) => {
     })
 };
 // SELECT stock by IN
-exports.getbyInStockSymbol = (req, res) => {
-    Stock.findAll({
-        where:{
-            stock_symbol: req.body
+exports.getbyInStockSymbol = async (req, res) => {
+    try{
+        let Ans;
+        console.log(req.body);
+        Ans = await db.sequelize.query('SELECT * FROM stocks WHERE stocks.stock_symbol IN( SELECT stock_symbol FROM options WHERE option_symbol = '+req.body+')')
+        const data = {
+            "res":Ans
         }
-    }).then(data =>{
         console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving stocks"
-        })
-    })
+        return res.send(data);
+        }catch(err){
+            console.log(err);}
+
 }
 //
-exports.getbyNotInStockSymbol = (req, res) => {
-    Stock.findAll({
-        where:{stock_symbol: {[Op.notIn]: req.body}}
-    }).then(data =>{
+exports.getbyNotInStockSymbol = async (req, res) => {
+    try{
+        let Ans;
+        console.log(req.body);
+        Ans = await db.sequelize.query('SELECT * FROM stocks WHERE stocks.stock_symbol NOT IN( SELECT stock_symbol FROM options WHERE option_symbol = '+req.body+')')
+        const data = {
+            "res":Ans
+        }
         console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving stocks"
-        })
-    })
+        return res.send(data);
+        }catch(err){
+            console.log(err);}
 }
 // INSERT new stock
 exports.insertStock = (req, res) => {
@@ -210,7 +206,7 @@ try{
 }
 //
 exports.havingMaxOptionPriceStock = (req, res) =>{
-    Option.findOne({
+    Option.findAll({
         attributes:[[sequelize.fn('max', sequelize.col('option.open_price')), 'result']],
         include :[{
             model: Stock,

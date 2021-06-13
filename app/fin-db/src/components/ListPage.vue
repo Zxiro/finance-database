@@ -24,15 +24,8 @@
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label mb-2 mt-2">Search Multiple</label>
-        <div class="input-group-append">
-          <button class="btn btn-success row-sm-4 mb-2 mt-2" type="button"
-            @click="onclickInsearch()">
-            Search
-          </button>
-        </div>
-      <div id = "in_group" class="form-group row row-m-1">
-          <div class="col-md-4">
+        <label class="col-sm-4 col-form-label mb-2 mt-2">Search Option IN</label>
+        <div class="col-md-4 mt-2">
             <input
               type="text"
               class="form-control"
@@ -40,64 +33,27 @@
               v-model="in_condtion[0]"
             />
           </div>
-          <div class="col-md-4">
-            <input
-              type="text"
-              class="form-control"
-              id="close-price"
-              required
-              v-model="in_condtion[1]"
-              name="close-price"
-            />
-          </div>
-          <div class="col-md-4">
-            <input
-              type="text"
-              class="form-control"
-              id="close-price"
-              required
-              v-model="in_condtion[2]"
-              name="close-price"
-            />
-          </div>
-      </div>
-       <label class="col-sm-4 col-form-label mb-2 mt-2">Search Multiple Not IN</label>
         <div class="input-group-append">
           <button class="btn btn-success row-sm-4 mb-2 mt-2" type="button"
-            @click="onclickNotInsearch()">
+            @click="onclickInsearch()">
             Search
           </button>
         </div>
-      <div id = "in_group" class="form-group row row-m-1">
-          <div class="col-md-4">
+       <label class="col-sm-4 col-form-label mb-2 mt-2">Search Option Not IN</label>
+       <div class="col-md-4 mt-2">
             <input
               type="text"
               class="form-control"
               required
               v-model="not_in_condtion[0]"
             />
-          </div>
-          <div class="col-md-4">
-            <input
-              type="text"
-              class="form-control"
-              id="close-price"
-              required
-              v-model="not_in_condtion[1]"
-              name="close-price"
-            />
-          </div>
-          <div class="col-md-4">
-            <input
-              type="text"
-              class="form-control"
-              id="close-price"
-              required
-              v-model="not_in_condtion[2]"
-              name="close-price"
-            />
-          </div>
       </div>
+        <div class="input-group-append">
+          <button class="btn btn-success row-sm-4 mb-2 mt-2" type="button"
+            @click="onclickNotInsearch()">
+            Search
+          </button>
+        </div>
       </div>
        <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by raw SQL"
@@ -288,113 +244,26 @@ export default {
       if(value == 'stock'){
         findataservice.getstockbyInsymbol(this.in_condtion)
         .then(response => {
-          this.entities = response.data;
+          this.entities =response.data['res'][0];
           console.log(this.entities);
         })
         .catch(e => {
           console.log(e);
         });
       }
-      if(value == 'bond'){
-        findataservice.getbondbyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }
-      if(value == 'option'){
-        findataservice.getoptionbyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }
-      if(value == 'enterprise'){
-        findataservice.getenterprisebyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }
-      if(value == 'future'){
-        findataservice.getfuturebyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }/*
-      if(value == 'future'){
-        this.retrieveAllFutureData();
-      }*/
     },
     onclickNotInsearch(){
       var value = this.type;
       if(value == 'stock'){
         findataservice.getstockbyNotInsymbol(this.not_in_condtion)
         .then(response => {
-          this.entities = response.data;
+          this.entities =response.data['res'][0];
           console.log(this.entities);
         })
         .catch(e => {
           console.log(e);
         });
       }
-      if(value == 'bond'){
-        findataservice.getbondbyNotInsymbol(this.not_in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }
-      if(value == 'option'){
-        findataservice.getoptionbyNotInsymbol(this.not_in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }
-      if(value == 'enterprise'){
-        findataservice.getenterprisebyNotInsymbol(this.not_in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }
-      if(value == 'future'){
-        findataservice.getfuturebyInsymbol(this.in_condtion)
-        .then(response => {
-          this.entities = response.data;
-          console.log(this.entities);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }/*
-      
-      if(value == 'future'){
-        this.retrieveAllFutureData();
-      }*/
     },
   //SELECT * FROM stocks WHERE stock_symbol IN (2330, 2303, 2454)
   //SELECT * FROM stocks WHERE stock_symbol NOT IN (2330, 2303, 2454)

@@ -71,7 +71,7 @@
           </nav>
           <div class = "form-group col text-center mt-4">
             <button @click="countEnterprise" class="btn btn-success row-sm-4">COUNT</button>
-            <button @click="havingMaxOpCashEnterprise" class="btn btn-success row-sm-4">HAVING Max Op cash</button>
+            <button @click="havingMaxOpCashEnterprise" class="btn btn-success row-sm-4">HAVING Min Op cash</button>
           </div>
           <div class="input-group mb-3 justify-content-center">
           <input type="text" class="form-control " placeholder="Search by raw SQL"
@@ -223,20 +223,9 @@ export default {
       havingMaxOpCashEnterprise(){
         findataservice.havingmaxopcashenterprise() 
         .then( response => {
-          for (var key in response.data["res"][0][0]){
-            console.log(key)
-            this.ddl_ans = 'SQL Ans: '+ response.data["res"][0][0][key]
-            break
-          }
-          //this.ddl_ans = 'SQL Ans: '+response.data['max'];
+          this.entities = response.data[0];
+          console.log(this.entities);
           response.end;
-          this.action_done = true;
-          /*
-          this.action_done = true;
-          this.ddl_ans = response.data;
-          console.log(response.data);
-          response.end;
-          this.action_done = true;*/
         }
         )
         .catch(e => {
@@ -272,6 +261,12 @@ export default {
         findataservice.rawenterprisedml(sql)
         .then(response => {
           //this.entities = response.data["res"][0][0];
+          console.log(response)
+          if(response.data['res'][0].length != 0){
+            this.dml_ans = 'enterprise: '+response.data['res'][0][0]['enterprise_symbol']+' does publish bond'
+            response.end;
+            this.action_done = true;
+          }
           console.log(response);
           response.end;
           this.action_done = true;
@@ -287,13 +282,9 @@ export default {
         }
         findataservice.rawenterpriseddl(sql)
         .then(response => {
-          console.log("?")
-          for (var key in response.data["res"][0][0]){
-            console.log(key)
-            this.ddl_ans = 'SQL Ans: '+ response.data["res"][0][0][key]
-            break
-          }
-          console.log(response);
+          this.entities = response.data['res'][0];
+          console.log(this.entities);
+          response.end;
         })
         .catch(e => {
           console.log(e);

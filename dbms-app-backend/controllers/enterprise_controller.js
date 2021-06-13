@@ -217,8 +217,10 @@ exports.raw_getEnterpriseSymbol = async (req, res) => {
 exports.rawEnterpriseDml = async (req, res) => { 
     try{
         console.log(req.body.sql);
-        await db.sequelize.query(req.body.sql);
-        return res.send();
+        let Ans
+        Ans= await db.sequelize.query(req.body.sql);
+        console.log(Ans)      
+        return res.send(Ans);
     }catch(err){
         console.log(err);
     }
@@ -261,13 +263,12 @@ exports.addLongStock = (stock_symbol, enterprise_symbol, shares) => {
 exports.havingMaxOpCashEnterperise= async(req, res) =>{
   try{
     let Ans;
-    console.log(req.params.enterprise_symbol);
-    Ans = await db.sequelize.query('SELECT MAX(operation_cash) FROM enterprises HAVING MAX(operation_cash)>400');
-    const data = {
+    Ans = await db.sequelize.query('SELECT enterprise_symbol, MIN(operation_cash) FROM enterprises GROUP BY enterprise_symbol HAVING MIN(operation_cash)>200000');
+    /*const data = {
         "res":Ans
-    }
-    console.log(data);
-    return res.send(data);
+    }*/
+    console.log(Ans);
+    return res.send(Ans);
     }catch(err){
         console.log(err);
     }

@@ -66,7 +66,7 @@
           </nav>
           <div class = "form-group col text-center mt-4">
             <button @click="countStock" class="btn btn-success row-sm-4">COUNT</button>
-            <button @click="havingMaxOptionPriceStock" class="btn btn-success row-sm-4">HAVING Max Op cash</button>
+            <!--button @click="havingMaxOptionPriceStock" class="btn btn-success row-sm-4">HAVING Max Option Price</button-->
             <button @click="maxStockPrice" class="btn btn-success row-sm-4">MAX</button>
             <button @click="minStockPrice" class="btn btn-success row-sm-4">MIN</button>
             <button @click="sumStockVolume" class="btn btn-success row-sm-4">SUM of Volume</button>
@@ -248,11 +248,10 @@ export default {
               console.log(e);
           });
       },
-      havingMaxOptionPriceStock(){
+      /*havingMaxOptionPriceStock(){
           findataservice.havingmaxoptionpricestock() 
         .then( response => {
           console.log(response);
-          this.action_done = true;
           this.ddl_ans = 'SQL Ans: '+response.data['result']
           console.log(response.data);
           response.end;
@@ -262,7 +261,7 @@ export default {
         .catch(e => {
               console.log(e);
           });
-      },
+      },*/
       notexistStockOption(){
         var stock_symbol = this.stock_data.stock_symbol
         findataservice.notexiststockoption(stock_symbol) 

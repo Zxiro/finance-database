@@ -288,7 +288,7 @@ const buildData = async () => {
       low_price:408,
       volume:10000
     });
-    const option10 = await option_controller.create(stock10.stock_symbol, {
+    const option10 = await option_controller.create(stock9.stock_symbol, {
       option_symbol:10001,
       open_price: 101,
       close_price:102,
