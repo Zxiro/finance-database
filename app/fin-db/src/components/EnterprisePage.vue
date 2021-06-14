@@ -51,7 +51,6 @@
                   Delete
                 </button>
                 <button @click="existEnterpriseBond" class="btn btn-success row-sm-4">EXIST bond</button>
-                
             </div>
           <div class="input-group mb-3 justify-content-center">
           <input type="text" class="form-control col-sm-8" placeholder="Search by raw SQL"
@@ -260,11 +259,14 @@ export default {
         }
         findataservice.rawenterprisedml(sql)
         .then(response => {
-          //this.entities = response.data["res"][0][0];
           console.log(response)
-          if(response.data['res'][0].length != 0){
-            this.dml_ans = 'enterprise: '+response.data['res'][0][0]['enterprise_symbol']+' does publish bond'
+          console.log(response.data[0])
+          if(response.data[0].length == 0){
             response.end;
+            this.action_done = true;
+          } else if(response.data[0].length != 0){
+            this.dml_ans = 'enterprise: '+response.data[0][0]['enterprise_symbol']+' does publish bond'
+            response.end
             this.action_done = true;
           }
           console.log(response);
