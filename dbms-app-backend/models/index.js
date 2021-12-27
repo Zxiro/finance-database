@@ -20,7 +20,7 @@ const db = {}; // Initliazie database module
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-var financialProduct = require('financial_product.js')
+var financialProduct = require('./financial_product.js')
 
 class stock extends financialProduct{}
 

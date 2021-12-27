@@ -5,20 +5,31 @@ module.exports = class productController{
         this.data  = require('jquery');
         this.type = require('os');
         this.sequelize = require('../models');
-        this.publish_stock = stock
-        this.publish_enterprise = enterprise
     };
     create_data = (symbol, create_data) => {
         // Create a product table 
-        const product = {
-            product_symbol: create_data.product_symbol,
-            open_price: create_data.open_price,
-            close_price: create_data.close_price,
-            high_price: create_data.high_price,
-            low_price: create_data.low_price,
-            volume: create_data.volume,
-            enterprise_symbol: symbol
-        };
+        if(enterprise==True){
+            const product = {
+                product_symbol: create_data.product_symbol,
+                open_price: create_data.open_price,
+                close_price: create_data.close_price,
+                high_price: create_data.high_price,
+                low_price: create_data.low_price,
+                volume: create_data.volume,
+                enterprise_symbol: symbol
+            };
+        }
+        if(stock==True){
+            const product = {
+                product_symbol: create_data.product_symbol,
+                open_price: create_data.open_price,
+                close_price: create_data.close_price,
+                high_price: create_data.high_price,
+                low_price: create_data.low_price,
+                volume: create_data.volume,
+                stock_symbol: symbol
+            };
+        }
         // Save product in the postgreSQL database
         return this.product.create(product).then(data => {
             console.log(data);
