@@ -7,6 +7,7 @@ const Option = db.option;
 const Op = db.Sequelize.Op;
 
 //Using Sequelize op
+//output the module
 exports.create = (symbol, create_data) => {
     // Create a stock table 
     const stock = {
@@ -285,7 +286,6 @@ exports.raw_getStockSymbol = async (req, res) => {
         console.log(err);
     }
 }
-
 //Using raw SQL
 exports.rawStockDml = async (req, res) => { 
     try{

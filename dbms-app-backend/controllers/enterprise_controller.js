@@ -212,7 +212,6 @@ exports.raw_getEnterpriseSymbol = async (req, res) => {
         console.log(err);
     }
 }
-
 //Using raw SQL
 exports.rawEnterpriseDml = async (req, res) => { 
     try{
@@ -287,7 +286,6 @@ exports.getExistBond = async(req, res) =>{
         console.log(err);
     }
 }
-
 //
 exports.sumEnterpriseNetCash = (req, res) =>{
   return Enterprise.findByPk(req.params.enterprise_symbol,{  
@@ -341,9 +339,3 @@ exports.getpublicBySymbol = (enter_symbol) =>{
       console.log(err);
   })
 }
-
-/*attributes:[db.sequelize.literal('SUM("long"."stock_symbol")'), 'result'],
-    group:['enterprise.enterprise_symbol', 'long.stock_symbol', 'long->long_stock.enterprise_symbol', 'long->long_stock.stock_symbol']
-    //attributes:[db.sequelize.literal('SUM(long["close_price"]'), 'result'],
-    //attributes:[[db.sequelize.literal('SUM(long["close_price"] * long["long_stock"]["share"])'), 'result']]
-    //group:['enterprise.enterprise_symbol', 'long.stock_symbol', 'long->long_stock.share']*/

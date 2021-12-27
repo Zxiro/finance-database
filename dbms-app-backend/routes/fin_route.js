@@ -1,4 +1,9 @@
 module.exports = app => { // set the corresponding method when getting different route/request
+    const db = require('../models')
+    const stock = db.stock
+    const bond = db.bond
+    const option = db.option
+    const future = db.future
     const stocks = require("../controllers/stock_controller.js");
     const bonds = require("../controllers/bond_controller.js");
     const enterprises = require("../controllers/enterprise_controller.js");
@@ -67,7 +72,6 @@ module.exports = app => { // set the corresponding method when getting different
     router.post("/options/raw/ddl", options.rawOptionDdl);
     router.post("/options/raw/dml", options.rawOptionDml);
     
-
     router.get("/futures", futures.getAll);
     router.get("/futures/symbol/:future_symbol", futures.getbyFutureSymbol);
     router.get("/futures/max", futures.getMaxbyFutureSymbol);
