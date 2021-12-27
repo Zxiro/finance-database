@@ -1,9 +1,83 @@
 module.exports = app => { // set the corresponding method when getting different route/request
-    const stocks = require("../controllers/stock_controller.js");
-    const bonds = require("../controllers/bond_controller.js");
-    const enterprises = require("../controllers/enterprise_controller.js");
-    const options = require("../controllers/option_controller.js");
-    const futures = require("../controllers/future_controller.js");
+    const db = require('../models')
+    const stock = db.stock
+    const bond = db.bond
+    const option = db.option
+    const future = db.future
+    var product_controller = require('../controllers/product_controller.js')
+    class stock_controller extends product_controller{
+        get_volume = async(req, res) =>{
+            try{
+                let ans
+                ans = await this.product.sum('volume')
+                console.log(ans);
+                const vol = {
+                    "vol":ans
+                }
+                res.send(vol);
+            }catch(err){
+                console.log(err);
+            }
+        }
+        get_stock_with_option = async (req, res) =>{
+            try{
+                let Ans;
+                console.log(req.params.stock_symbol);
+                Ans = await db.sequelize.query('SELECT stock_symbol FROM stocks WHERE EXISTS (SELECT * FROM options WHERE options.stock_symbol='+req.params.stock_symbol+') AND stocks.stock_symbol = '+req.params.stock_symbol);
+                const data = {
+                    "res":Ans
+                }
+                console.log(data);
+                return res.send(data);
+                }catch(err){
+                    console.log(err);
+                }
+            }
+    }
+
+    class bond_controller extends product_controller{}
+
+    class option_controller extends product_controller{
+        get_volume = async(req, res) =>{
+            try{
+                let ans
+                ans = await this.product.sum('volume')
+                console.log(ans);
+                const vol = {
+                    "vol":ans
+                }
+                res.send(vol);
+            }catch(err){
+                console.log(err);
+            }
+        }
+    }
+
+    class future_controller extends product_controller{
+        get_volume = async(req, res) =>{
+            try{
+                let ans
+                ans = await this.product.sum('volume')
+                console.log(ans);
+                const vol = {
+                    "vol":ans
+                }
+                res.send(vol);
+            }catch(err){
+                console.log(err);
+            }
+        }
+    }
+
+    const stocks = new stock_controller(stock, True, False)
+
+    const bonds = new bond_controller(bond, True, False)
+
+    const options = new option_controller(option, False, True)
+
+    const futures = new future_controller(future, False, True)
+
+
     var router = require("express").Router(); // init router var to determine the route
    
     // Retrive data by symbol
@@ -67,7 +141,6 @@ module.exports = app => { // set the corresponding method when getting different
     router.post("/options/raw/ddl", options.rawOptionDdl);
     router.post("/options/raw/dml", options.rawOptionDml);
     
-
     router.get("/futures", futures.getAll);
     router.get("/futures/symbol/:future_symbol", futures.getbyFutureSymbol);
     router.get("/futures/max", futures.getMaxbyFutureSymbol);
@@ -85,3 +158,12 @@ module.exports = app => { // set the corresponding method when getting different
 
     app.use('/', router);
 };
+
+
+/*
+const stocks = require("../controllers/stock_controller.js");
+const bonds = require("../controllers/bond_controller.js");
+const enterprises = require("../controllers/enterprise_controller.js");
+const options = require("../controllers/option_controller.js");
+const futures = require("../controllers/future_controller.js");
+*/

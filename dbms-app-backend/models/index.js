@@ -20,15 +20,32 @@ const db = {}; // Initliazie database module
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.stock = require("./stock_model.js")(sequelize, Sequelize);
+var financialProduct = require('./financial_product.js')
+
+class stock extends financialProduct{}
+
+class bond extends financialProduct{}
+
+class option extends financialProduct{}
+
+class future extends financialProduct{}
+
+db.stock = new stock(sequelize, Sequelize, 'stock', True, False)
+
+db.bond = new bond(sequelize, Sequelize, 'bond', True, False)
+
+db.option = new option(sequelize, Sequelize, 'option', False, True)
+
+db.future = new future(sequelize, Sequelize, 'future', False, True)
+
 db.enterprise = require("./enterprise_model.js")(sequelize, Sequelize);
+/*
+db.stock = require("./stock_model.js")(sequelize, Sequelize);
 db.bond = require("./bond_model.js")(sequelize, Sequelize);
 db.option = require("./option_model.js")(sequelize, Sequelize);
 db.future = require("./future_model.js")(sequelize, Sequelize);
 db.long_stock = require("./long_stock.js")(sequelize, Sequelize);
-db.short_stock = require("./short_stock.js")(sequelize, Sequelize);
-
-
+db.short_stock = require("./short_stock.js")(sequelize, Sequelize);*/
 
 // Here to create relationship 
 
