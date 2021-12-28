@@ -8,8 +8,9 @@ module.exports = class productController{
     };
     create_data = (symbol, create_data) => {
         // Create a product table 
+        const product = {}
         if(enterprise==True){
-            const product = {
+            product = {
                 product_symbol: create_data.product_symbol,
                 open_price: create_data.open_price,
                 close_price: create_data.close_price,
@@ -20,7 +21,7 @@ module.exports = class productController{
             };
         }
         if(stock==True){
-            const product = {
+            product = {
                 product_symbol: create_data.product_symbol,
                 open_price: create_data.open_price,
                 close_price: create_data.close_price,
