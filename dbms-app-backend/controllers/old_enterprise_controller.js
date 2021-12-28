@@ -70,101 +70,8 @@ exports.getbyNotInEnterpriseSymbol = (req, res) => {
         })
     })
 }
-// INSERT new enterprise
-exports.insertEnterprise = (req, res) => {
-    const enterprise = {
-        enterprise_symbol: req.body.enterprise_symbol,
-        operation_cash:req.body.operation_cash,
-        investing_cash:req.body.investing_cash,
-        financing_cash:req.body.financing_cash
-    };
-    console.log(enterprise)
-    return Enterprise.create(enterprise)
-    .then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving enterprises"
-        })
-    })
-};
 // SELECT * FROM enterprises WHERE enterprise_symbol =
-exports.getbyEnterpriseSymbol = (req, res) => {
-    const enterpriseSymbol = req.params.enterprise_symbol;
-    Enterprise.findAll({
-        where:{
-            enterprise_symbol:enterpriseSymbol // SELECT * FROM enterprise WHERE enterprise_symbol = enterpriseSymbol
-    }})
-    .then(data =>{
-        console.log(data);
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: 
-                err.message || "Some error occurred while retrieving enterprises"
-        })
-    })
-};
 // UPDATE
-exports.updatebySymbol = (req, res) => {
-    const enterprise_symbol = req.body.enterprise_symbol;
-    const update_data = {
-      enterprise_symbol: req.body.enterprise_symbol,
-      operation_cash:req.body.operation_cash,
-      investing_cash:req.body.investing_cash,
-      financing_cash:req.body.financing_cash
-    }
-    //console.log(update_data);
-    Enterprise.update(update_data, {
-      where: { 
-        enterprise_symbol: enterprise_symbol 
-      }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Tutorial was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Tutorial with id=${enterprise_symbol}. Maybe Tutorial was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Tutorial with id=" + enterprise_symbol
-        });
-      });
-};
-// DELETE
-exports.deletebySymbol = (req, res) => {
-    const enterprise_symbol = req.body.enterprise_symbol;
-  
-    Enterprise.destroy({
-      where: { enterprise_symbol: enterprise_symbol }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Tutorial was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete Tutorial with id=${enterprise_symbol}. Maybe Tutorial was not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete Tutorial with id=" + enterprise_symbol
-        });
-      });
-};
 exports.getBySymbol = (enter_symbol) =>{
     return Enterprise.findByPk(enter_symbol,{
         include: Option
@@ -272,20 +179,6 @@ exports.havingMaxOpCashEnterperise= async(req, res) =>{
         console.log(err);
     }
   }
-exports.getExistBond = async(req, res) =>{
-  try{
-    let Ans;
-    console.log(req.params.enterprise_symbol);
-    Ans = await db.sequelize.query('SELECT enterprise_symbol FROM enterprises WHERE EXISTS (SELECT enterprise_symbol FROM bonds WHERE bonds.enterprise_symbol ='+req.params.enterprise_symbol+')AND enterprises.enterprise_symbol = '+req.params.enterprise_symbol);
-    const data = {
-        "res":Ans
-    }
-    console.log(data);
-    return res.send(data);
-    }catch(err){
-        console.log(err);
-    }
-}
 //
 exports.sumEnterpriseNetCash = (req, res) =>{
   return Enterprise.findByPk(req.params.enterprise_symbol,{  
